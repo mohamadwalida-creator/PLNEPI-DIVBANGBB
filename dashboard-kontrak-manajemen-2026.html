@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Realisasi Kontrak Manajemen 2026</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --ink:#1F2430;
+    --ink-soft:#6B7280;
+    --border:#E4E1D8;
+    --bg:#EFEDE6;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    font-family:'Inter', sans-serif;
+    color:var(--ink);
+    padding:24px 22px 50px;
+  }
+  .wrap{max-width:1120px;margin:0 auto;}
+  .eyebrow{font-size:11.5px;letter-spacing:1.2px;color:var(--ink-soft);margin-bottom:4px;}
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:25px;
+    margin:0 0 20px 0;
+    color:#3B4A9E;
+  }
+  .metrics{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:4px;
+    margin-bottom:22px;
+  }
+  .metric{
+    border-radius:6px;
+    padding:16px 12px 14px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    gap:8px;
+    color:#fff;
+  }
+  .metric .label{font-size:10.5px;font-weight:600;letter-spacing:0.6px;color:rgba(255,255,255,0.85);text-transform:uppercase;}
+  .metric svg{width:26px;height:26px;stroke:#fff;stroke-width:1.4;}
+  .metric .value{font-family:'JetBrains Mono', monospace;font-size:17px;font-weight:600;white-space:nowrap;}
+  .metric .sub{font-size:10.5px;color:rgba(255,255,255,0.75);}
+
+  .card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .card-title{font-size:12.5px;font-weight:600;letter-spacing:0.3px;margin-bottom:2px;}
+  .card-sub{font-size:11px;color:var(--ink-soft);margin-bottom:10px;}
+
+  .trends{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:12px;
+    margin-bottom:14px;
+  }
+  .chart-box{height:160px;}
+  .legend-row{display:flex;gap:14px;margin-top:4px;font-size:10.5px;color:var(--ink-soft);}
+  .legend-row span{display:flex;align-items:center;gap:4px;}
+  .swatch{width:14px;height:2px;display:inline-block;}
+
+  .donuts{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-bottom:14px;
+  }
+  .donut-flex{display:flex;align-items:center;justify-content:center;}
+  .donut-canvas-wrap{width:120px;height:120px;flex-shrink:0;}
+  .donut-legend{display:flex;flex-direction:column;gap:6px;margin-left:12px;justify-content:center;}
+  .donut-legend div{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ink-soft);}
+  .dot{width:9px;height:9px;border-radius:2px;flex-shrink:0;display:inline-block;}
+
+  .monthly-card{margin-bottom:14px;}
+  .monthly-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;flex-wrap:wrap;gap:8px;}
+  select{
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:6px 10px;
+    font-size:12.5px;
+    color:var(--ink);
+    background:#fff;
+    max-width:340px;
+    font-family:'Inter', sans-serif;
+  }
+  .monthly-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:18px;}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  th{font-weight:500;color:var(--ink-soft);text-align:left;padding:0 8px 8px 0;}
+  th.right, td.right{text-align:right;}
+  td{padding:7px 8px 7px 0;border-top:1px solid var(--border);}
+  td.mono{font-family:'JetBrains Mono', monospace;}
+  .badge{
+    font-size:11px;
+    font-weight:600;
+    padding:2px 8px;
+    border-radius:5px;
+    font-family:'JetBrains Mono', monospace;
+    display:inline-block;
+  }
+  .mini-chart-title{font-size:11px;color:var(--ink-soft);margin-bottom:8px;}
+  .mini-chart-box{height:200px;}
+
+  .table-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;}
+  .tabs{display:flex;gap:6px;background:#F4F2EC;border-radius:8px;padding:4px;}
+  .tabs button{
+    border:none;
+    cursor:pointer;
+    padding:5px 12px;
+    border-radius:6px;
+    font-size:12px;
+    font-weight:500;
+    background:transparent;
+    color:var(--ink-soft);
+    font-family:'Inter', sans-serif;
+  }
+  .tabs button.active{background:var(--ink);color:#fff;}
+
+  .main-table td:first-child{padding-left:0;}
+  .footnote{margin-top:18px;font-size:11px;color:var(--ink-soft);text-align:center;}
+
+  @media (max-width: 900px){
+    .metrics{grid-template-columns:repeat(3,1fr);}
+    .trends{grid-template-columns:1fr;}
+    .donuts{grid-template-columns:1fr;}
+    .monthly-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">PT PLN ENERGI PRIMER INDONESIA — SVP PENGEMBANGAN USAHA BATUBARA</div>
+  <h1>REALISASI KONTRAK MANAJEMEN 2026 — S.D. JULI</h1>
+
+  <div class="metrics" id="metrics"></div>
+
+  <div class="trends">
+    <div class="card">
+      <div class="card-title">PENDAPATAN SERVICE FEE</div>
+      <div class="card-sub">kumulatif, Rp Miliar — Jan s.d. Jul 2026</div>
+      <div class="chart-box"><canvas id="chart-servicefee"></canvas></div>
+      <div class="legend-row">
+        <span><span class="swatch" style="background:#B4AFA0"></span> target</span>
+        <span><span class="swatch" style="background:#2F6F4E"></span> realisasi</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">PENDAPATAN INOVATIF</div>
+      <div class="card-sub">kumulatif, Rp Miliar — Jan s.d. Jul 2026</div>
+      <div class="chart-box"><canvas id="chart-inovatif"></canvas></div>
+      <div class="legend-row">
+        <span><span class="swatch" style="background:#B4AFA0"></span> target</span>
+        <span><span class="swatch" style="background:#2F6F4E"></span> realisasi</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">EFISIENSI ENERGI PRIMER</div>
+      <div class="card-sub">kumulatif, Rp Miliar — Jan s.d. Jul 2026</div>
+      <div class="chart-box"><canvas id="chart-energi"></canvas></div>
+      <div class="legend-row">
+        <span><span class="swatch" style="background:#B4AFA0"></span> target</span>
+        <span><span class="swatch" style="background:#2F6F4E"></span> realisasi</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="donuts">
+    <div class="card">
+      <div class="card-title">KOMPOSISI BOBOT KATEGORI KPI (A · TOTAL 40)</div>
+      <div class="donut-flex">
+        <div class="donut-canvas-wrap"><canvas id="donut-a"></canvas></div>
+        <div class="donut-legend" id="legend-a"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">KOMPOSISI BOBOT PERFORMANCE INDICATORS (B · TOTAL 60)</div>
+      <div class="donut-flex">
+        <div class="donut-canvas-wrap"><canvas id="donut-b"></canvas></div>
+        <div class="donut-legend" id="legend-b"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card monthly-card">
+    <div class="monthly-head">
+      <div class="card-title">PENCAPAIAN BULANAN PER INDIKATOR</div>
+      <select id="monthly-select"></select>
+    </div>
+    <div class="card-sub" id="monthly-satuan"></div>
+    <div class="monthly-grid">
+      <table>
+        <thead>
+          <tr>
+            <th>Bulan</th>
+            <th class="right">Target</th>
+            <th class="right">Realisasi</th>
+            <th class="right">Capaian</th>
+          </tr>
+        </thead>
+        <tbody id="monthly-table-body"></tbody>
+      </table>
+      <div>
+        <div class="mini-chart-title">Tren capaian (%) per bulan</div>
+        <div class="mini-chart-box"><canvas id="chart-monthly"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="table-head">
+      <div class="card-title">RINCIAN INDIKATOR KINERJA — REALISASI S.D. JULI 2026</div>
+      <div class="tabs" id="tabs">
+        <button data-k="Semua" class="active">Semua</button>
+        <button data-k="A">Kategori A</button>
+        <button data-k="B">Kategori B</button>
+      </div>
+    </div>
+    <table class="main-table">
+      <thead>
+        <tr>
+          <th>Indikator</th>
+          <th>Satuan</th>
+          <th class="right">Bobot</th>
+          <th class="right">Target</th>
+          <th class="right">Realisasi</th>
+          <th class="right">Capaian</th>
+        </tr>
+      </thead>
+      <tbody id="main-table-body"></tbody>
+    </table>
+  </div>
+
+  <div class="footnote">
+    Sumber: berkas "REALISASI USULAN KONTRAK MANAJEMEN TAHUN 2026" — realisasi s.d. Juli 2026, Jakarta 5 Agustus 2026.
+    Catatan: pada indikator Pengendalian Anggaran Operasi, capaian dihitung berdasarkan efisiensi penyerapan anggaran (penyerapan rendah = capaian tinggi).
+  </div>
+</div>
+
+<script>
+const inkSoft = "#6B7280";
+const border = "#E4E1D8";
+
+/* ---------- Data ---------- */
+
+const metricBlocks = [
+  { icon: "trophy", label: "Total nilai kinerja", value: "106,80", sub: "dari basis 100", color: "#5B3FA8" },
+  { icon: "layers", label: "Skor kategori KPI (A)", value: "43,50", sub: "bobot 40", color: "#7A3FA8" },
+  { icon: "target", label: "Skor performance (B)", value: "63,30", sub: "bobot 60", color: "#B23FA0" },
+  { icon: "wallet", label: "Pendapatan service fee", value: "Rp 398,56 M", sub: "capaian 105,0%", color: "#2FA097" },
+  { icon: "sparkles", label: "Pendapatan inovatif", value: "Rp 4.056,68 M", sub: "capaian 110,0%", color: "#2E8C7E" },
+  { icon: "check", label: "Indikator capai target", value: "15 / 15", sub: "100% indikator", color: "#0F6E56" },
+];
+
+const icons = {
+  trophy: '<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M17 4h3a2 2 0 0 1 2 2 4 4 0 0 1-4 4"/><path d="M7 4H4a2 2 0 0 0-2 2 4 4 0 0 0 4 4"/></svg>',
+  layers: '<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>',
+  target: '<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+  wallet: '<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>',
+  sparkles: '<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>',
+  check: '<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>',
+};
+
+const serviceFee = [
+  { bulan: "Jan", target: 49.26, realisasi: 42.94 },
+  { bulan: "Feb", target: 98.52, realisasi: 94.68 },
+  { bulan: "Mar", target: 147.77, realisasi: 146.71 },
+  { bulan: "Apr", target: 197.03, realisasi: 202.49 },
+  { bulan: "Mei", target: 246.29, realisasi: 261.05 },
+  { bulan: "Jun", target: 295.55, realisasi: 332.11 },
+  { bulan: "Jul", target: 379.42, realisasi: 398.56 },
+];
+
+const pendapatanInovatif = [
+  { bulan: "Jan", target: 190, realisasi: 192.31 },
+  { bulan: "Feb", target: 681.11, realisasi: 681.11 },
+  { bulan: "Mar", target: 1099.65, realisasi: 1099.65 },
+  { bulan: "Apr", target: 1712.92, realisasi: 1743.55 },
+  { bulan: "Mei", target: 2178.65, realisasi: 2557.76 },
+  { bulan: "Jun", target: 2414.4, realisasi: 2972.04 },
+  { bulan: "Jul", target: 3268, realisasi: 4056.68 },
+];
+
+const efisiensiEnergi = [
+  { bulan: "Jan", target: 0.09, realisasi: 0.09 },
+  { bulan: "Feb", target: 6.42, realisasi: 9.83 },
+  { bulan: "Mar", target: 9.63, realisasi: 10.88 },
+  { bulan: "Apr", target: 13.03, realisasi: 13.03 },
+  { bulan: "Mei", target: 13.18, realisasi: 13.18 },
+  { bulan: "Jun", target: 19.5, realisasi: 23.35 },
+  { bulan: "Jul", target: 21.88, realisasi: 28.49 },
+];
+
+const indikator = [
+  { kategori: "A", nama: "Pendapatan service fee", satuan: "Rp Miliar", bobot: 10, target: "379,42", realisasi: "398,56", pct: 105.0 },
+  { kategori: "A", nama: "Pengendalian anggaran operasi", satuan: "% penyerapan", bobot: 10, target: "58,0", realisasi: "15,2", pct: 110.0 },
+  { kategori: "A", nama: "Pendapatan inovatif", satuan: "Rp Miliar", bobot: 10, target: "3.268,0", realisasi: "4.056,7", pct: 110.0 },
+  { kategori: "A", nama: "Efisiensi pengelolaan energi primer", satuan: "Rp Miliar", bobot: 10, target: "21,88", realisasi: "28,49", pct: 130.2 },
+  { kategori: "B", nama: "Pasokan batubara — tambang sendiri & afiliasi", satuan: "Ribu MT", bobot: 4, target: "467,5", realisasi: "541,6", pct: 110.0 },
+  { kategori: "B", nama: "Pasokan batubara — ke Coal Blending Facility", satuan: "Ribu MT", bobot: 4, target: "350,0", realisasi: "359,5", pct: 102.7 },
+  { kategori: "B", nama: "Pasokan batubara — ke Intermediate Stockpile", satuan: "Ribu MT", bobot: 4, target: "910,0", realisasi: "991,0", pct: 108.9 },
+  { kategori: "B", nama: "Implementasi platform ICO tahap I", satuan: "Waktu", bobot: 8, target: "Go live 30 Jun 2026", realisasi: "Selesai", pct: 110.0 },
+  { kategori: "B", nama: "Milestone kewajiban tambang ke negara", satuan: "%", bobot: 15, target: "100", realisasi: "100", pct: 110.0 },
+  { kategori: "B", nama: "Feasibility study & AMDAL", satuan: "%", bobot: 8, target: "100", realisasi: "100", pct: 100.0 },
+  { kategori: "B", nama: "Kajian program pengembangan batubara", satuan: "Dokumen", bobot: 7, target: "100", realisasi: "100", pct: 100.0 },
+  { kategori: "B", nama: "Good Corporate Governance (GCG)", satuan: "%", bobot: 2, target: "100", realisasi: "100", pct: 100.0 },
+  { kategori: "B", nama: "Roadmap manajemen risiko", satuan: "%", bobot: 2, target: "100", realisasi: "100,6", pct: 100.6 },
+  { kategori: "B", nama: "Maturity level kepatuhan", satuan: "Level", bobot: 2, target: "4,4", realisasi: "4,56", pct: 106.0 },
+  { kategori: "B", nama: "Ketepatan waktu & akurasi laporan", satuan: "%", bobot: 4, target: "100", realisasi: "100", pct: 100.0 },
+];
+
+const monthlyDetail = {
+  "Pendapatan service fee": {
+    satuan: "Rp Miliar (kumulatif)",
+    rows: [
+      { bulan: "Jan", target: "49,26", realisasi: "42,94", pct: 87.2 },
+      { bulan: "Feb", target: "98,52", realisasi: "94,68", pct: 96.1 },
+      { bulan: "Mar", target: "147,77", realisasi: "146,71", pct: 99.3 },
+      { bulan: "Apr", target: "197,03", realisasi: "202,49", pct: 102.8 },
+      { bulan: "Mei", target: "246,29", realisasi: "261,05", pct: 106.0 },
+      { bulan: "Jun", target: "295,55", realisasi: "332,11", pct: 112.4 },
+      { bulan: "Jul", target: "379,42", realisasi: "398,56", pct: 105.0 },
+    ],
+  },
+  "Pengendalian anggaran operasi": {
+    satuan: "% penyerapan (kumulatif) — makin rendah makin baik",
+    rows: [
+      { bulan: "Jan", target: "8,0", realisasi: "2,7", pct: 110.0 },
+      { bulan: "Feb", target: "17,0", realisasi: "3,3", pct: 110.0 },
+      { bulan: "Mar", target: "25,0", realisasi: "4,4", pct: 110.0 },
+      { bulan: "Apr", target: "33,0", realisasi: "5,0", pct: 110.0 },
+      { bulan: "Mei", target: "42,0", realisasi: "5,3", pct: 110.0 },
+      { bulan: "Jun", target: "50,0", realisasi: "11,0", pct: 177.9 },
+      { bulan: "Jul", target: "58,0", realisasi: "15,2", pct: 110.0 },
+    ],
+  },
+  "Pendapatan inovatif": {
+    satuan: "Rp Miliar (kumulatif)",
+    rows: [
+      { bulan: "Jan", target: "190,00", realisasi: "192,31", pct: 101.2 },
+      { bulan: "Feb", target: "821,46", realisasi: "681,11", pct: 100.0 },
+      { bulan: "Mar", target: "1.097,08", realisasi: "1.099,65", pct: 100.0 },
+      { bulan: "Apr", target: "1.712,92", realisasi: "1.743,55", pct: 101.8 },
+      { bulan: "Mei", target: "2.178,65", realisasi: "2.557,76", pct: 117.4 },
+      { bulan: "Jun", target: "2.414,40", realisasi: "2.972,04", pct: 123.1 },
+      { bulan: "Jul", target: "3.268,00", realisasi: "4.056,68", pct: 110.0 },
+    ],
+  },
+  "Efisiensi pengelolaan energi primer": {
+    satuan: "Rp Miliar (kumulatif)",
+    rows: [
+      { bulan: "Jan", target: "0,09", realisasi: "0,09", pct: 100.9 },
+      { bulan: "Feb", target: "6,42", realisasi: "9,83", pct: 153.1 },
+      { bulan: "Mar", target: "9,63", realisasi: "10,88", pct: 110.0 },
+      { bulan: "Apr", target: "13,03", realisasi: "13,03", pct: 100.0 },
+      { bulan: "Mei", target: "13,18", realisasi: "13,18", pct: 100.0 },
+      { bulan: "Jun", target: "19,50", realisasi: "23,35", pct: 119.7 },
+      { bulan: "Jul", target: "21,88", realisasi: "28,49", pct: 130.2 },
+    ],
+  },
+  "Pasokan batubara — tambang sendiri & afiliasi": {
+    satuan: "Ribu MT (kumulatif)",
+    rows: [
+      { bulan: "Jan", target: "52,5", realisasi: "70,5", pct: 134.3 },
+      { bulan: "Feb", target: "97,5", realisasi: "172,7", pct: 177.1 },
+      { bulan: "Mar", target: "142,5", realisasi: "297,8", pct: 209.0 },
+      { bulan: "Apr", target: "187,5", realisasi: "377,8", pct: 201.5 },
+      { bulan: "Mei", target: "257,5", realisasi: "427,8", pct: 166.2 },
+      { bulan: "Jun", target: "327,5", realisasi: "488,1", pct: 149.0 },
+      { bulan: "Jul", target: "467,5", realisasi: "541,6", pct: 110.0 },
+    ],
+  },
+  "Pasokan batubara — ke Coal Blending Facility": {
+    satuan: "Ribu MT (kumulatif)",
+    rows: [
+      { bulan: "Jan", target: "30,0", realisasi: "70,0", pct: 233.3 },
+      { bulan: "Feb", target: "80,0", realisasi: "125,0", pct: 156.3 },
+      { bulan: "Mar", target: "100,0", realisasi: "125,0", pct: 125.0 },
+      { bulan: "Apr", target: "125,0", realisasi: "170,0", pct: 136.0 },
+      { bulan: "Mei", target: "200,0", realisasi: "240,0", pct: 120.0 },
+      { bulan: "Jun", target: "270,0", realisasi: "290,0", pct: 107.4 },
+      { bulan: "Jul", target: "350,0", realisasi: "359,5", pct: 102.7 },
+    ],
+  },
+  "Pasokan batubara — ke Intermediate Stockpile": {
+    satuan: "Ribu MT (kumulatif)",
+    rows: [
+      { bulan: "Jan", target: "90,0", realisasi: "101,3", pct: 112.5 },
+      { bulan: "Feb", target: "90,0", realisasi: "238,8", pct: 101.6 },
+      { bulan: "Mar", target: "235,0", realisasi: "388,9", pct: 99.7 },
+      { bulan: "Apr", target: "500,0", realisasi: "550,5", pct: 110.1 },
+      { bulan: "Mei", target: "610,0", realisasi: "701,4", pct: 115.0 },
+      { bulan: "Jun", target: "780,0", realisasi: "842,1", pct: 108.0 },
+      { bulan: "Jul", target: "910,0", realisasi: "991,0", pct: 108.9 },
+    ],
+  },
+  "Implementasi platform ICO tahap I": {
+    satuan: "Status penyelesaian",
+    rows: [
+      { bulan: "Jan", target: "—", realisasi: "Belum dimulai", pct: null },
+      { bulan: "Feb", target: "—", realisasi: "Belum dimulai", pct: null },
+      { bulan: "Mar", target: "—", realisasi: "Belum dimulai", pct: null },
+      { bulan: "Apr", target: "—", realisasi: "Belum dimulai", pct: null },
+      { bulan: "Mei", target: "—", realisasi: "Belum dimulai", pct: null },
+      { bulan: "Jun", target: "Go live 30 Jun 2026", realisasi: "Selesai (go live)", pct: 110.0 },
+      { bulan: "Jul", target: "—", realisasi: "Selesai", pct: 110.0 },
+    ],
+  },
+  "Milestone kewajiban tambang ke negara": {
+    satuan: "% (tidak kena sanksi penghentian operasi)",
+    rows: [
+      { bulan: "Jan", target: "100", realisasi: "Tidak ada sanksi", pct: 100.0 },
+      { bulan: "Feb", target: "100", realisasi: "Tidak ada sanksi", pct: 100.0 },
+      { bulan: "Mar", target: "100", realisasi: "Tidak ada sanksi", pct: 100.0 },
+      { bulan: "Apr", target: "100", realisasi: "Tidak ada sanksi", pct: 100.0 },
+      { bulan: "Mei", target: "100", realisasi: "Tidak ada sanksi", pct: 100.0 },
+      { bulan: "Jun", target: "100", realisasi: "100", pct: 100.0 },
+      { bulan: "Jul", target: "100", realisasi: "110", pct: 110.0 },
+    ],
+  },
+  "Feasibility study & AMDAL": {
+    satuan: "% penyelesaian",
+    rows: [
+      { bulan: "Jan", target: "—", realisasi: "Belum jatuh tempo", pct: null },
+      { bulan: "Feb", target: "—", realisasi: "Belum jatuh tempo", pct: null },
+      { bulan: "Mar", target: "—", realisasi: "Belum jatuh tempo", pct: null },
+      { bulan: "Apr", target: "—", realisasi: "Belum jatuh tempo", pct: null },
+      { bulan: "Mei", target: "—", realisasi: "Belum jatuh tempo", pct: null },
+      { bulan: "Jun", target: "100", realisasi: "100", pct: 100.0 },
+      { bulan: "Jul", target: "100", realisasi: "100", pct: 100.0 },
+    ],
+  },
+  "Kajian program pengembangan batubara": {
+    satuan: "Dokumen",
+    rows: [
+      { bulan: "Jan", target: "0", realisasi: "0", pct: null },
+      { bulan: "Feb", target: "—", realisasi: "—", pct: null },
+      { bulan: "Mar", target: "—", realisasi: "—", pct: null },
+      { bulan: "Apr", target: "—", realisasi: "—", pct: null },
+      { bulan: "Mei", target: "—", realisasi: "—", pct: null },
+      { bulan: "Jun", target: "100", realisasi: "100", pct: 100.0 },
+      { bulan: "Jul", target: "100", realisasi: "100", pct: 100.0 },
+    ],
+  },
+  "Good Corporate Governance (GCG)": {
+    satuan: "% penyelesaian program kerja",
+    rows: [
+      { bulan: "Jan", target: "100", realisasi: "0", pct: 0 },
+      { bulan: "Feb", target: "100", realisasi: "0", pct: 0 },
+      { bulan: "Mar", target: "100", realisasi: "0", pct: 0 },
+      { bulan: "Apr", target: "100", realisasi: "0", pct: 0 },
+      { bulan: "Mei", target: "100", realisasi: "—", pct: null },
+      { bulan: "Jun", target: "100", realisasi: "100", pct: 100.0 },
+      { bulan: "Jul", target: "100", realisasi: "100", pct: 100.0 },
+    ],
+  },
+  "Roadmap manajemen risiko": {
+    satuan: "% realisasi program",
+    rows: [
+      { bulan: "Jan", target: "100", realisasi: "100", pct: 100.0 },
+      { bulan: "Feb", target: "100", realisasi: "100", pct: 100.0 },
+      { bulan: "Mar", target: "100", realisasi: "100", pct: 100.0 },
+      { bulan: "Apr", target: "100", realisasi: "100", pct: 100.0 },
+      { bulan: "Mei", target: "100", realisasi: "100", pct: 100.0 },
+      { bulan: "Jun", target: "100", realisasi: "100", pct: 100.0 },
+      { bulan: "Jul", target: "100", realisasi: "100,6", pct: 100.6 },
+    ],
+  },
+  "Maturity level kepatuhan": {
+    satuan: "Level (skala kematangan)",
+    rows: [
+      { bulan: "Jan", target: "—", realisasi: "0", pct: 0 },
+      { bulan: "Feb", target: "—", realisasi: "0", pct: 0 },
+      { bulan: "Mar", target: "—", realisasi: "0", pct: 0 },
+      { bulan: "Apr", target: "—", realisasi: "0", pct: 0 },
+      { bulan: "Mei", target: "—", realisasi: "—", pct: null },
+      { bulan: "Jun", target: "4,3", realisasi: "4,56", pct: 106.0 },
+      { bulan: "Jul", target: "—", realisasi: "4,56", pct: 106.0 },
+    ],
+  },
+  "Ketepatan waktu & akurasi laporan": {
+    satuan: "% ketepatan waktu",
+    rows: [
+      { bulan: "Jan", target: "100", realisasi: "100", pct: 100.0 },
+      { bulan: "Feb", target: "100", realisasi: "100", pct: 100.0 },
+      { bulan: "Mar", target: "100", realisasi: "110", pct: 110.0 },
+      { bulan: "Apr", target: "100", realisasi: "110", pct: 110.0 },
+      { bulan: "Mei", target: "100", realisasi: "110", pct: 110.0 },
+      { bulan: "Jun", target: "100", realisasi: "100", pct: 100.0 },
+      { bulan: "Jul", target: "100", realisasi: "100", pct: 100.0 },
+    ],
+  },
+};
+
+const komposisiA = [
+  { nama: "Service fee", nilai: 10, color: "#4B4B4B" },
+  { nama: "Anggaran operasi", nilai: 10, color: "#7A7A7A" },
+  { nama: "Pendapatan inovatif", nilai: 10, color: "#A6A6A6" },
+  { nama: "Efisiensi energi primer", nilai: 10, color: "#D0D0D0" },
+];
+
+const komposisiB = [
+  { nama: "Pasokan batubara", nilai: 12, color: "#7A2E1E" },
+  { nama: "Platform ICO", nilai: 8, color: "#C1502E" },
+  { nama: "Milestone tambang", nilai: 15, color: "#E28B5D" },
+  { nama: "Dokumen penunjang", nilai: 15, color: "#F2C4A6" },
+  { nama: "Tata kelola & kepatuhan", nilai: 10, color: "#F8DEC7" },
+];
+
+/* ---------- Helpers ---------- */
+
+function statusColor(pct){
+  if (pct >= 105) return { fg: "#0F6E56", bg: "#E1F5EE" };
+  if (pct >= 100) return { fg: "#854F0B", bg: "#FAEEDA" };
+  return { fg: "#993C1D", bg: "#FAECE7" };
+}
+
+/* ---------- Render: metric blocks ---------- */
+
+const metricsEl = document.getElementById("metrics");
+metricBlocks.forEach(m => {
+  const div = document.createElement("div");
+  div.className = "metric";
+  div.style.background = m.color;
+  div.innerHTML = `
+    <span class="label">${m.label}</span>
+    ${icons[m.icon]}
+    <span class="value">${m.value}</span>
+    <span class="sub">${m.sub}</span>
+  `;
+  metricsEl.appendChild(div);
+});
+
+/* ---------- Trend line charts ---------- */
+
+function makeTrendChart(canvasId, data){
+  new Chart(document.getElementById(canvasId), {
+    type: "line",
+    data: {
+      labels: data.map(d => d.bulan),
+      datasets: [
+        {
+          label: "Target",
+          data: data.map(d => d.target),
+          borderColor: "#B4AFA0",
+          borderDash: [4,3],
+          borderWidth: 2,
+          pointRadius: 0,
+          tension: 0.3,
+        },
+        {
+          label: "Realisasi",
+          data: data.map(d => d.realisasi),
+          borderColor: "#2F6F4E",
+          backgroundColor: "#2F6F4E",
+          borderWidth: 2,
+          pointRadius: 3,
+          tension: 0.3,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 10 }, color: inkSoft } },
+        y: { grid: { color: border }, ticks: { font: { size: 10 }, color: inkSoft } },
+      },
+    },
+  });
+}
+
+makeTrendChart("chart-servicefee", serviceFee);
+makeTrendChart("chart-inovatif", pendapatanInovatif);
+makeTrendChart("chart-energi", efisiensiEnergi);
+
+/* ---------- Donut charts ---------- */
+
+function makeDonut(canvasId, legendId, data){
+  new Chart(document.getElementById(canvasId), {
+    type: "doughnut",
+    data: {
+      labels: data.map(d => d.nama),
+      datasets: [{
+        data: data.map(d => d.nilai),
+        backgroundColor: data.map(d => d.color),
+        borderWidth: 0,
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: "55%",
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => `bobot ${ctx.parsed}`,
+          }
+        }
+      },
+    },
+  });
+
+  const legendEl = document.getElementById(legendId);
+  data.forEach(d => {
+    const row = document.createElement("div");
+    row.innerHTML = `<span class="dot" style="background:${d.color}"></span>${d.nama} (${d.nilai})`;
+    legendEl.appendChild(row);
+  });
+}
+
+makeDonut("donut-a", "legend-a", komposisiA);
+makeDonut("donut-b", "legend-b", komposisiB);
+
+/* ---------- Monthly detail card ---------- */
+
+const monthlySelect = document.getElementById("monthly-select");
+const monthlySatuan = document.getElementById("monthly-satuan");
+const monthlyTableBody = document.getElementById("monthly-table-body");
+let monthlyChart = null;
+
+Object.keys(monthlyDetail).forEach(name => {
+  const opt = document.createElement("option");
+  opt.value = name;
+  opt.textContent = name;
+  monthlySelect.appendChild(opt);
+});
+
+function renderMonthly(name){
+  const detail = monthlyDetail[name];
+  monthlySatuan.textContent = detail.satuan;
+
+  monthlyTableBody.innerHTML = "";
+  detail.rows.forEach(r => {
+    const sc = r.pct === null ? { fg: inkSoft, bg: "#F4F2EC" } : statusColor(r.pct);
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td style="font-weight:500;">${r.bulan}</td>
+      <td class="right mono">${r.target}</td>
+      <td class="right mono">${r.realisasi}</td>
+      <td class="right">
+        <span class="badge" style="color:${sc.fg};background:${sc.bg};">
+          ${r.pct === null ? "—" : r.pct.toFixed(1) + "%"}
+        </span>
+      </td>
+    `;
+    monthlyTableBody.appendChild(tr);
+  });
+
+  const chartData = detail.rows.map(r => r.pct);
+  const labels = detail.rows.map(r => r.bulan);
+
+  if (monthlyChart) monthlyChart.destroy();
+  monthlyChart = new Chart(document.getElementById("chart-monthly"), {
+    type: "line",
+    data: {
+      labels,
+      datasets: [{
+        data: chartData,
+        borderColor: "#2F6F4E",
+        backgroundColor: "#2F6F4E",
+        borderWidth: 2,
+        pointRadius: 3,
+        spanGaps: true,
+        tension: 0.3,
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: (ctx) => `${ctx.parsed.y}% Capaian` } },
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 10 }, color: inkSoft } },
+        y: { grid: { color: border }, ticks: { font: { size: 10 }, color: inkSoft, callback: v => v + "%" } },
+      },
+    },
+  });
+}
+
+monthlySelect.addEventListener("change", (e) => renderMonthly(e.target.value));
+renderMonthly(Object.keys(monthlyDetail)[0]);
+
+/* ---------- Main table ---------- */
+
+const mainTableBody = document.getElementById("main-table-body");
+const tabsEl = document.getElementById("tabs");
+let currentKategori = "Semua";
+
+function renderMainTable(){
+  const filtered = indikator.filter(d => currentKategori === "Semua" || d.kategori === currentKategori);
+  mainTableBody.innerHTML = "";
+  filtered.forEach(d => {
+    const sc = statusColor(d.pct);
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${d.nama}</td>
+      <td style="color:${inkSoft};">${d.satuan}</td>
+      <td class="right mono">${d.bobot}</td>
+      <td class="right mono">${d.target}</td>
+      <td class="right mono">${d.realisasi}</td>
+      <td class="right">
+        <span class="badge" style="color:${sc.fg};background:${sc.bg};">${d.pct.toFixed(1)}%</span>
+      </td>
+    `;
+    mainTableBody.appendChild(tr);
+  });
+}
+
+tabsEl.querySelectorAll("button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    tabsEl.querySelectorAll("button").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentKategori = btn.dataset.k;
+    renderMainTable();
+  });
+});
+
+renderMainTable();
+</script>
+</body>
+</html>
