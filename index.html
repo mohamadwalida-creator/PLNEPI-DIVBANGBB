@@ -147,15 +147,6 @@
 
   <div class="trends">
     <div class="card">
-      <div class="card-title">PENDAPATAN SERVICE FEE</div>
-      <div class="card-sub">kumulatif, Rp Miliar — Jan s.d. Jul 2026</div>
-      <div class="chart-box"><canvas id="chart-servicefee"></canvas></div>
-      <div class="legend-row">
-        <span><span class="swatch" style="background:#B4AFA0"></span> target</span>
-        <span><span class="swatch" style="background:#2F6F4E"></span> realisasi</span>
-      </div>
-    </div>
-    <div class="card">
       <div class="card-title">PENDAPATAN INOVATIF</div>
       <div class="card-sub">kumulatif, Rp Miliar — Jan s.d. Jul 2026</div>
       <div class="chart-box"><canvas id="chart-inovatif"></canvas></div>
@@ -165,9 +156,18 @@
       </div>
     </div>
     <div class="card">
-      <div class="card-title">EFISIENSI ENERGI PRIMER</div>
-      <div class="card-sub">kumulatif, Rp Miliar — Jan s.d. Jul 2026</div>
-      <div class="chart-box"><canvas id="chart-energi"></canvas></div>
+      <div class="card-title">PASOKAN BATUBARA — TAMBANG SENDIRI & AFILIASI</div>
+      <div class="card-sub">kumulatif, Ribu MT — Jan s.d. Jul 2026</div>
+      <div class="chart-box"><canvas id="chart-tambang"></canvas></div>
+      <div class="legend-row">
+        <span><span class="swatch" style="background:#B4AFA0"></span> target</span>
+        <span><span class="swatch" style="background:#2F6F4E"></span> realisasi</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">PASOKAN BATUBARA — KE COAL BLENDING FACILITY</div>
+      <div class="card-sub">kumulatif, Ribu MT — Jan s.d. Jul 2026</div>
+      <div class="chart-box"><canvas id="chart-blending"></canvas></div>
       <div class="legend-row">
         <span><span class="swatch" style="background:#B4AFA0"></span> target</span>
         <span><span class="swatch" style="background:#2F6F4E"></span> realisasi</span>
@@ -271,16 +271,6 @@ const icons = {
   check: '<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>',
 };
 
-const serviceFee = [
-  { bulan: "Jan", target: 49.26, realisasi: 42.94 },
-  { bulan: "Feb", target: 98.52, realisasi: 94.68 },
-  { bulan: "Mar", target: 147.77, realisasi: 146.71 },
-  { bulan: "Apr", target: 197.03, realisasi: 202.49 },
-  { bulan: "Mei", target: 246.29, realisasi: 261.05 },
-  { bulan: "Jun", target: 295.55, realisasi: 332.11 },
-  { bulan: "Jul", target: 379.42, realisasi: 398.56 },
-];
-
 const pendapatanInovatif = [
   { bulan: "Jan", target: 190, realisasi: 192.31 },
   { bulan: "Feb", target: 681.11, realisasi: 681.11 },
@@ -291,14 +281,24 @@ const pendapatanInovatif = [
   { bulan: "Jul", target: 3268, realisasi: 4056.68 },
 ];
 
-const efisiensiEnergi = [
-  { bulan: "Jan", target: 0.09, realisasi: 0.09 },
-  { bulan: "Feb", target: 6.42, realisasi: 9.83 },
-  { bulan: "Mar", target: 9.63, realisasi: 10.88 },
-  { bulan: "Apr", target: 13.03, realisasi: 13.03 },
-  { bulan: "Mei", target: 13.18, realisasi: 13.18 },
-  { bulan: "Jun", target: 19.5, realisasi: 23.35 },
-  { bulan: "Jul", target: 21.88, realisasi: 28.49 },
+const pasokanTambang = [
+  { bulan: "Jan", target: 52.5, realisasi: 70.5 },
+  { bulan: "Feb", target: 97.5, realisasi: 172.7 },
+  { bulan: "Mar", target: 142.5, realisasi: 297.8 },
+  { bulan: "Apr", target: 187.5, realisasi: 377.8 },
+  { bulan: "Mei", target: 257.5, realisasi: 427.8 },
+  { bulan: "Jun", target: 327.5, realisasi: 488.1 },
+  { bulan: "Jul", target: 467.5, realisasi: 541.6 },
+];
+
+const pasokanBlending = [
+  { bulan: "Jan", target: 30.0, realisasi: 70.0 },
+  { bulan: "Feb", target: 80.0, realisasi: 125.0 },
+  { bulan: "Mar", target: 100.0, realisasi: 125.0 },
+  { bulan: "Apr", target: 125.0, realisasi: 170.0 },
+  { bulan: "Mei", target: 200.0, realisasi: 240.0 },
+  { bulan: "Jun", target: 270.0, realisasi: 290.0 },
+  { bulan: "Jul", target: 350.0, realisasi: 359.5 },
 ];
 
 const indikator = [
@@ -581,9 +581,9 @@ function makeTrendChart(canvasId, data){
   });
 }
 
-makeTrendChart("chart-servicefee", serviceFee);
 makeTrendChart("chart-inovatif", pendapatanInovatif);
-makeTrendChart("chart-energi", efisiensiEnergi);
+makeTrendChart("chart-tambang", pasokanTambang);
+makeTrendChart("chart-blending", pasokanBlending);
 
 /* ---------- Donut charts ---------- */
 
