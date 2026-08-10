@@ -29,15 +29,19 @@
     inset:0;
     width:100%;
     height:100%;
-    opacity:0.34;
+    opacity:0.35;
     z-index:0;
     pointer-events:none;
     overflow:hidden;
+    background-image:
+      linear-gradient(115deg, rgba(7,22,38,.88) 0%, rgba(14,59,78,.55) 38%, rgba(255,255,255,.18) 70%, rgba(255,255,255,.05) 100%),
+      url('https://commons.wikimedia.org/wiki/Special:Redirect/file/PLTU_Paiton_dari_jalan.jpg');
+    background-size:cover;
+    background-position:center 48%;
+    background-repeat:no-repeat;
   }
-  .bg-scene svg{
-    width:100%;
-    height:100%;
-  }
+  .bg-scene svg{display:none;}
+  .bg-credit{font-size:9px;color:rgba(255,255,255,.55);position:fixed;right:12px;bottom:8px;z-index:2;pointer-events:none;}
   .wrap{max-width:1120px;margin:0 auto;position:relative;z-index:1;}
 
   .header-bar{
@@ -73,6 +77,44 @@
     max-width:190px;
     object-fit:contain;
   }
+
+  /* ---------- Export / Prognosa / Action Tracker ---------- */
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px;}
+  .action-btn{border:1px solid var(--border);background:#fff;color:var(--ink);padding:8px 12px;border-radius:7px;font:600 12px 'Inter',sans-serif;cursor:pointer;}
+  .action-btn.primary{background:#1F5F78;color:#fff;border-color:#1F5F78;}
+  .action-btn:hover{filter:brightness(.97);}
+  .info-strip{background:#F4F8FA;border:1px solid #D7E5EA;border-radius:8px;padding:10px 12px;font-size:11.5px;color:#35515D;margin-bottom:14px;line-height:1.5;}
+  .forecast-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-end;margin-bottom:12px;}
+  .forecast-select{min-width:280px;border:1px solid var(--border);border-radius:6px;padding:8px 10px;font:12px 'Inter',sans-serif;background:#fff;color:var(--ink);}
+  .forecast-table{width:100%;border-collapse:collapse;font-size:11.5px;}
+  .forecast-table th,.forecast-table td{padding:8px 7px;border-bottom:1px solid var(--border);vertical-align:middle;}
+  .forecast-table th{font-size:10.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.25px;text-align:left;background:#FAFAF7;}
+  .forecast-table .right{text-align:right;}
+  .forecast-input{width:110px;border:1px solid #C9D8DE;border-radius:5px;padding:6px 7px;font:12px 'JetBrains Mono',monospace;text-align:right;background:#fff;}
+  .forecast-input:focus{outline:2px solid rgba(31,95,120,.15);border-color:#1F5F78;}
+  .forecast-input[disabled]{background:#F4F2EC;color:#8A8A84;border-color:#E4E1D8;}
+  .forecast-pct{display:inline-block;min-width:64px;text-align:center;padding:4px 7px;border-radius:999px;font:600 11px 'JetBrains Mono',monospace;}
+  .forecast-month{font-weight:600;white-space:nowrap;}
+  .forecast-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 14px;}
+  .summary-mini{border:1px solid var(--border);border-radius:8px;padding:11px 12px;background:#fff;}
+  .summary-mini .k{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.4px;}
+  .summary-mini .v{font-size:18px;font-weight:700;margin-top:3px;}
+  .tracker-form{display:grid;grid-template-columns:1.2fr 1.2fr 1.6fr .8fr .8fr auto;gap:8px;align-items:end;margin-bottom:14px;}
+  .tracker-form label{display:block;font-size:10.5px;color:var(--ink-soft);margin-bottom:4px;}
+  .tracker-form input,.tracker-form textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font:11.5px 'Inter',sans-serif;min-height:34px;resize:vertical;}
+  .tracker-table{width:100%;border-collapse:collapse;font-size:11.5px;}
+  .tracker-table th,.tracker-table td{padding:8px;border-bottom:1px solid var(--border);vertical-align:top;}
+  .tracker-table th{background:#FAFAF7;color:var(--ink-soft);font-size:10.5px;text-transform:uppercase;letter-spacing:.25px;text-align:left;}
+  .tracker-delete{border:0;background:transparent;color:#993C1D;cursor:pointer;font-size:11px;}
+  .tracker-empty{padding:22px;text-align:center;color:var(--ink-soft);font-size:12px;border:1px dashed var(--border);border-radius:8px;}
+  .export-preview{overflow:auto;}
+  @media (max-width:900px){
+    .forecast-summary{grid-template-columns:1fr;}
+    .tracker-form{grid-template-columns:1fr;}
+    .forecast-head{align-items:stretch;flex-direction:column;}
+    .forecast-select{min-width:0;width:100%;}
+  }
+
   @media (max-width: 900px){
     .header-logo-img{height:30px !important;}
   }
@@ -357,6 +399,44 @@
   .delete-entry:hover{text-decoration:underline;}
   .notulensi-empty{font-size:12px;color:var(--ink-soft);text-align:center;padding:14px;}
 
+
+  /* ---------- Export / Prognosa / Action Tracker ---------- */
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px;}
+  .action-btn{border:1px solid var(--border);background:#fff;color:var(--ink);padding:8px 12px;border-radius:7px;font:600 12px 'Inter',sans-serif;cursor:pointer;}
+  .action-btn.primary{background:#1F5F78;color:#fff;border-color:#1F5F78;}
+  .action-btn:hover{filter:brightness(.97);}
+  .info-strip{background:#F4F8FA;border:1px solid #D7E5EA;border-radius:8px;padding:10px 12px;font-size:11.5px;color:#35515D;margin-bottom:14px;line-height:1.5;}
+  .forecast-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-end;margin-bottom:12px;}
+  .forecast-select{min-width:280px;border:1px solid var(--border);border-radius:6px;padding:8px 10px;font:12px 'Inter',sans-serif;background:#fff;color:var(--ink);}
+  .forecast-table{width:100%;border-collapse:collapse;font-size:11.5px;}
+  .forecast-table th,.forecast-table td{padding:8px 7px;border-bottom:1px solid var(--border);vertical-align:middle;}
+  .forecast-table th{font-size:10.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.25px;text-align:left;background:#FAFAF7;}
+  .forecast-table .right{text-align:right;}
+  .forecast-input{width:110px;border:1px solid #C9D8DE;border-radius:5px;padding:6px 7px;font:12px 'JetBrains Mono',monospace;text-align:right;background:#fff;}
+  .forecast-input:focus{outline:2px solid rgba(31,95,120,.15);border-color:#1F5F78;}
+  .forecast-input[disabled]{background:#F4F2EC;color:#8A8A84;border-color:#E4E1D8;}
+  .forecast-pct{display:inline-block;min-width:64px;text-align:center;padding:4px 7px;border-radius:999px;font:600 11px 'JetBrains Mono',monospace;}
+  .forecast-month{font-weight:600;white-space:nowrap;}
+  .forecast-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 14px;}
+  .summary-mini{border:1px solid var(--border);border-radius:8px;padding:11px 12px;background:#fff;}
+  .summary-mini .k{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.4px;}
+  .summary-mini .v{font-size:18px;font-weight:700;margin-top:3px;}
+  .tracker-form{display:grid;grid-template-columns:1.2fr 1.2fr 1.6fr .8fr .8fr auto;gap:8px;align-items:end;margin-bottom:14px;}
+  .tracker-form label{display:block;font-size:10.5px;color:var(--ink-soft);margin-bottom:4px;}
+  .tracker-form input,.tracker-form textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font:11.5px 'Inter',sans-serif;min-height:34px;resize:vertical;}
+  .tracker-table{width:100%;border-collapse:collapse;font-size:11.5px;}
+  .tracker-table th,.tracker-table td{padding:8px;border-bottom:1px solid var(--border);vertical-align:top;}
+  .tracker-table th{background:#FAFAF7;color:var(--ink-soft);font-size:10.5px;text-transform:uppercase;letter-spacing:.25px;text-align:left;}
+  .tracker-delete{border:0;background:transparent;color:#993C1D;cursor:pointer;font-size:11px;}
+  .tracker-empty{padding:22px;text-align:center;color:var(--ink-soft);font-size:12px;border:1px dashed var(--border);border-radius:8px;}
+  .export-preview{overflow:auto;}
+  @media (max-width:900px){
+    .forecast-summary{grid-template-columns:1fr;}
+    .tracker-form{grid-template-columns:1fr;}
+    .forecast-head{align-items:stretch;flex-direction:column;}
+    .forecast-select{min-width:0;width:100%;}
+  }
+
   @media (max-width: 900px){
     .metrics{grid-template-columns:repeat(3,1fr);}
     .trends{grid-template-columns:1fr;}
@@ -485,6 +565,7 @@
     </g>
   </svg>
 </div>
+<div class="bg-credit">Foto latar: PLTU Paiton · Wikimedia Commons</div>
 <div class="wrap">
   <div class="header-bar">
     <div class="logo-mark">
@@ -515,6 +596,18 @@
       <button class="nav-item" data-panel="rincian">
         <svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg>
         Rincian Indikator
+      </button>
+      <button class="nav-item" data-panel="export">
+        <svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+        Export Pencapaian
+      </button>
+      <button class="nav-item" data-panel="prognosa">
+        <svg viewBox="0 0 24 24"><path d="M4 19V5"/><path d="M4 19h16"/><path d="m7 15 4-4 3 2 5-7"/></svg>
+        Prognosa Kinerja
+      </button>
+      <button class="nav-item" data-panel="tracker">
+        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Action Tracker
       </button>
       <button class="nav-item" data-panel="notulensi">
         <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>
@@ -627,6 +720,54 @@
         <div class="footnote">
           Sumber: berkas "REALISASI USULAN KONTRAK MANAJEMEN TAHUN 2026" — realisasi s.d. Juli 2026, Jakarta 5 Agustus 2026.
           Catatan: pada indikator Pengendalian Anggaran Operasi, capaian dihitung berdasarkan efisiensi penyerapan anggaran (penyerapan rendah = capaian tinggi).
+        </div>
+      </div>
+
+
+      <div class="panel" id="panel-export">
+        <div class="card">
+          <div class="card-title">EXPORT PENCAPAIAN KINERJA</div>
+          <div class="card-sub">Export menggunakan data indikator dan realisasi yang sudah tersedia pada dashboard.</div>
+          <div class="toolbar">
+            <button class="action-btn primary" id="export-csv">Export CSV / Excel</button>
+            <button class="action-btn" id="print-performance">Print / Save PDF</button>
+          </div>
+          <div class="info-strip">File CSV dibuat dalam format UTF-8 dengan pemisah titik koma sehingga dapat langsung dibuka di Microsoft Excel. Data yang diekspor mencakup kategori, indikator, satuan, bobot, target, realisasi, dan capaian.</div>
+          <div class="export-preview"><table class="main-table"><thead><tr><th>Indikator</th><th>Satuan</th><th class="right">Bobot</th><th class="right">Target</th><th class="right">Realisasi</th><th class="right">Capaian</th></tr></thead><tbody id="export-preview-body"></tbody></table></div>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-prognosa">
+        <div class="card">
+          <div class="card-title">PROGNOSA KINERJA</div>
+          <div class="card-sub">Input rencana realisasi untuk bulan yang belum memiliki realisasi. Persentase dihitung otomatis mengikuti formula indikator.</div>
+          <div class="info-strip"><b>Formula:</b> indikator normal = realisasi ÷ target × 100%; <b>Pengendalian Anggaran Operasi</b> menggunakan prinsip semakin rendah penyerapan semakin tinggi capaian (maksimum 110% untuk formula prognosa). Untuk target bulan mendatang yang belum tersedia, target dapat diisi manual terlebih dahulu.</div>
+          <div class="forecast-head">
+            <div><div class="card-title" style="margin-bottom:4px;">Pilih indikator</div><div class="card-sub">Bulan Jan–Jul menampilkan data aktual; Aug–Des dapat diisi sebagai prognosa.</div></div>
+            <select class="forecast-select" id="forecast-select"></select>
+          </div>
+          <div class="forecast-summary">
+            <div class="summary-mini"><div class="k">Realisasi terakhir</div><div class="v" id="forecast-last">—</div></div>
+            <div class="summary-mini"><div class="k">Target terakhir</div><div class="v" id="forecast-target-last">—</div></div>
+            <div class="summary-mini"><div class="k">Capaian terakhir</div><div class="v" id="forecast-pct-last">—</div></div>
+          </div>
+          <div class="export-preview"><table class="forecast-table"><thead><tr><th>Bulan</th><th class="right">Target</th><th class="right">Realisasi / Rencana Realisasi</th><th class="right">Capaian</th></tr></thead><tbody id="forecast-body"></tbody></table></div>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-tracker">
+        <div class="card">
+          <div class="card-title">ACTION TRACKER</div>
+          <div class="card-sub">Catat isu, kendala, tindak lanjut, PIC, dan target waktu. Action item dapat ditambahkan lebih dari satu.</div>
+          <div class="tracker-form">
+            <div><label>Isu</label><textarea id="tracker-isu" rows="2" placeholder="Isu yang perlu ditindaklanjuti"></textarea></div>
+            <div><label>Kendala</label><textarea id="tracker-kendala" rows="2" placeholder="Kendala / gap"></textarea></div>
+            <div><label>Tindak Lanjut</label><textarea id="tracker-tindak" rows="2" placeholder="Rencana tindak lanjut"></textarea></div>
+            <div><label>PIC</label><input id="tracker-pic" type="text" placeholder="Nama / fungsi" /></div>
+            <div><label>Target Waktu</label><input id="tracker-target" type="date" /></div>
+            <button class="action-btn primary" id="tracker-add">+ Tambah</button>
+          </div>
+          <div id="tracker-table-wrap"></div>
         </div>
       </div>
 
@@ -1213,6 +1354,132 @@ navItems.forEach(btn => {
     }
   });
 });
+
+
+/* ---------- Export Pencapaian ---------- */
+const exportPreviewBody = document.getElementById("export-preview-body");
+function renderExportPreview(){
+  exportPreviewBody.innerHTML = indikator.map(d => {
+    const sc = statusColor(d.pct);
+    return `<tr><td>${d.nama}</td><td style="color:${inkSoft};">${d.satuan}</td><td class="right mono">${d.bobot}</td><td class="right mono">${d.target}</td><td class="right mono">${d.realisasi}</td><td class="right"><span class="badge" style="color:${sc.fg};background:${sc.bg};">${Number(d.pct).toFixed(1)}%</span></td></tr>`;
+  }).join("");
+}
+renderExportPreview();
+
+function csvEscape(v){
+  const x = String(v ?? "");
+  return '"' + x.replace(/"/g,'""') + '"';
+}
+function exportPerformanceCSV(){
+  const rows = [
+    ["Kategori","Indikator","Satuan","Bobot","Target","Realisasi","Capaian (%)"],
+    ...indikator.map(d => [d.kategori,d.nama,d.satuan,d.bobot,d.target,d.realisasi,Number(d.pct).toFixed(1)])
+  ];
+  const csv = "\uFEFF" + rows.map(r => r.map(csvEscape).join(";")).join("\r\n");
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "Pencapaian_Kinerja_2026.csv";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 500);
+}
+document.getElementById("export-csv").addEventListener("click", exportPerformanceCSV);
+document.getElementById("print-performance").addEventListener("click", () => window.print());
+
+/* ---------- Prognosa Kinerja ---------- */
+const futureMonths = ["Agustus","September","Oktober","November","Desember"];
+const monthShort = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Ags","Sep","Okt","Nov","Des"];
+const forecastStore = JSON.parse(localStorage.getItem("dashboardForecast2026") || "{}");
+const forecastSelect = document.getElementById("forecast-select");
+const forecastBody = document.getElementById("forecast-body");
+
+Object.keys(monthlyDetail).forEach(name => {
+  const opt = document.createElement("option"); opt.value = name; opt.textContent = name; forecastSelect.appendChild(opt);
+});
+
+function numID(v){
+  if (v === null || v === undefined) return null;
+  const s = String(v).trim().replace(/\./g,"").replace(",",".");
+  const n = Number(s);
+  return Number.isFinite(n) ? n : null;
+}
+function fmtForecast(v){
+  if (v === null || v === undefined || v === "") return "";
+  return Number(v).toLocaleString("id-ID", {maximumFractionDigits:2});
+}
+function calcForecastPct(name, target, realization){
+  const t = numID(target), r = numID(realization);
+  if (t === null || r === null || t === 0) return null;
+  if (name === "Pengendalian anggaran operasi") return Math.min(110, (t / r) * 100);
+  return (r / t) * 100;
+}
+function getForecast(name, month){
+  if (!forecastStore[name]) forecastStore[name] = {};
+  if (!forecastStore[name][month]) forecastStore[name][month] = {target:"", realization:""};
+  return forecastStore[name][month];
+}
+function renderForecast(name){
+  const rows = monthlyDetail[name].rows.slice();
+  const lastActual = [...rows].reverse().find(r => r.realisasi !== "—" && r.realisasi !== "" && r.realisasi !== "Belum dimulai" && r.realisasi !== "Belum jatuh tempo");
+  document.getElementById("forecast-last").textContent = lastActual ? lastActual.realisasi : "—";
+  document.getElementById("forecast-target-last").textContent = lastActual ? lastActual.target : "—";
+  const lastPct = lastActual ? lastActual.pct : null;
+  document.getElementById("forecast-pct-last").textContent = lastPct === null || lastPct === undefined ? "—" : Number(lastPct).toFixed(1) + "%";
+
+  forecastBody.innerHTML = "";
+  rows.forEach(r => {
+    const sc = r.pct == null ? {fg:inkSoft,bg:"#F4F2EC"} : statusColor(r.pct);
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td class="forecast-month">${r.bulan}</td><td class="right mono">${r.target}</td><td class="right mono">${r.realisasi}</td><td class="right"><span class="forecast-pct" style="color:${sc.fg};background:${sc.bg}">${r.pct==null?"—":Number(r.pct).toFixed(1)+"%"}</span></td>`;
+    forecastBody.appendChild(tr);
+  });
+
+  futureMonths.forEach((m, idx) => {
+    const short = monthShort[idx+7];
+    const f = getForecast(name, short);
+    const targetVal = f.target || "";
+    const realVal = f.realization || "";
+    const pct = calcForecastPct(name, targetVal, realVal);
+    const sc = pct == null ? {fg:inkSoft,bg:"#F4F2EC"} : statusColor(pct);
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td class="forecast-month">${m}</td>
+      <td class="right"><input class="forecast-input" data-kind="target" data-month="${short}" value="${targetVal}" placeholder="Target" inputmode="decimal"></td>
+      <td class="right"><input class="forecast-input" data-kind="realization" data-month="${short}" value="${realVal}" placeholder="Rencana" inputmode="decimal"></td>
+      <td class="right"><span class="forecast-pct" id="forecast-pct-${short}" style="color:${sc.fg};background:${sc.bg}">${pct==null?"—":Number(pct).toFixed(1)+"%"}</span></td>`;
+    forecastBody.appendChild(tr);
+  });
+
+  forecastBody.querySelectorAll("input").forEach(input => {
+    input.addEventListener("input", () => {
+      const month=input.dataset.month, kind=input.dataset.kind;
+      const f=getForecast(name,month); f[kind]=input.value;
+      localStorage.setItem("dashboardForecast2026", JSON.stringify(forecastStore));
+      const target=getForecast(name,month).target, real=getForecast(name,month).realization;
+      const pct=calcForecastPct(name,target,real); const sc=pct==null?{fg:inkSoft,bg:"#F4F2EC"}:statusColor(pct);
+      const badge=document.getElementById("forecast-pct-"+month);
+      badge.textContent=pct==null?"—":Number(pct).toFixed(1)+"%"; badge.style.color=sc.fg; badge.style.background=sc.bg;
+    });
+  });
+}
+forecastSelect.addEventListener("change", e => renderForecast(e.target.value));
+renderForecast(Object.keys(monthlyDetail)[0]);
+
+/* ---------- Action Tracker ---------- */
+let actionItems = JSON.parse(localStorage.getItem("dashboardActionTracker2026") || "[]");
+const trackerWrap = document.getElementById("tracker-table-wrap");
+function renderActionTracker(){
+  if (!actionItems.length){ trackerWrap.innerHTML='<div class="tracker-empty">Belum ada action item. Tambahkan isu dan tindak lanjut menggunakan form di atas.</div>'; return; }
+  trackerWrap.innerHTML=`<div class="export-preview"><table class="tracker-table"><thead><tr><th>No.</th><th>Isu</th><th>Kendala</th><th>Tindak Lanjut</th><th>PIC</th><th>Target Waktu</th><th></th></tr></thead><tbody>${actionItems.map((a,i)=>`<tr><td>${i+1}</td><td>${escapeHtml(a.isu)}</td><td>${escapeHtml(a.kendala)}</td><td>${escapeHtml(a.tindak)}</td><td>${escapeHtml(a.pic)}</td><td>${escapeHtml(a.target)}</td><td><button class="tracker-delete" data-index="${i}">Hapus</button></td></tr>`).join("")}</tbody></table></div>`;
+  trackerWrap.querySelectorAll(".tracker-delete").forEach(btn=>btn.addEventListener("click",()=>{actionItems.splice(Number(btn.dataset.index),1);localStorage.setItem("dashboardActionTracker2026",JSON.stringify(actionItems));renderActionTracker();}));
+}
+function escapeHtml(v){return String(v??"").replace(/[&<>'"]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[ch]));}
+document.getElementById("tracker-add").addEventListener("click",()=>{
+  const isu=document.getElementById("tracker-isu").value.trim(); const kendala=document.getElementById("tracker-kendala").value.trim(); const tindak=document.getElementById("tracker-tindak").value.trim(); const pic=document.getElementById("tracker-pic").value.trim(); const target=document.getElementById("tracker-target").value;
+  if(!isu && !tindak){alert("Isi minimal Isu atau Tindak Lanjut.");return;}
+  actionItems.push({isu,kendala,tindak,pic,target}); localStorage.setItem("dashboardActionTracker2026",JSON.stringify(actionItems));
+  ["tracker-isu","tracker-kendala","tracker-tindak","tracker-pic","tracker-target"].forEach(id=>document.getElementById(id).value=""); renderActionTracker();
+});
+renderActionTracker();
 
 /* ---------- Notulensi rapat ---------- */
 
