@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Coal Business Development PLN EPI · Dashboard Kinerja & Coal Intelligence · Live News 30s</title>
+<title>Coal Business Development PLN EPI · Dashboard Kinerja & Coal Intelligence · Live News 30s · Embedded AI Assistant</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
@@ -480,6 +480,14 @@
 .tracker-form{display:grid;grid-template-columns:minmax(190px,1.05fr) minmax(190px,1.05fr) minmax(260px,1.45fr) minmax(135px,.72fr) minmax(145px,.78fr) 104px;gap:10px;align-items:end;margin:16px 0 14px}.tracker-field{min-width:0}.tracker-form label{display:block;font-size:10.5px;font-weight:700;color:#596272;margin:0 0 6px}.tracker-form input,.tracker-form textarea{width:100%;border:1px solid #d9dfe4;border-radius:8px;padding:9px 10px;font:11.5px 'Inter',sans-serif;min-height:40px;resize:vertical;background:#fff;color:var(--ink);transition:border-color .15s,box-shadow .15s}.tracker-form textarea{height:66px}.tracker-form input{height:40px}.tracker-form input:focus,.tracker-form textarea:focus{outline:none;border-color:#16748b;box-shadow:0 0 0 3px rgba(22,116,139,.10)}.tracker-form .action-btn{height:40px;white-space:nowrap;border-radius:8px}.tracker-wrap{overflow:auto;border:1px solid #e4e8eb;border-radius:10px}.tracker-table{min-width:930px}.tracker-table th{padding:10px 11px;background:#f5f8f9;color:#52616b;font-size:9.5px}.tracker-table td{padding:10px 11px;font-size:10.5px;border-bottom:1px solid #edf0f2;line-height:1.45}.tracker-table tr:last-child td{border-bottom:0}.tracker-index{width:34px;text-align:center;color:#0d7088;font-weight:800}.tracker-date{white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:10px}.tracker-delete{border:1px solid #f0cfc8;background:#fff5f3;color:#a54838;padding:5px 8px;border-radius:6px;cursor:pointer;font-size:10px}.tracker-delete:hover{background:#ffe9e4}.tracker-empty{margin:0;border:0;border-radius:0;padding:30px}.tracker-count{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 7px;border-radius:999px;background:#e8f5f7;color:#0b7188;font-size:10px;font-weight:800;margin-left:5px}.tracker-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:2px}.tracker-hint{font-size:10px;color:var(--ink-soft)}
 @media(max-width:1050px){.tracker-form{grid-template-columns:1fr 1fr 1.4fr 1fr 1fr 90px}.home-grid{grid-template-columns:1fr}.home-kpis{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:720px){.home-title{font-size:24px}.home-kpis{grid-template-columns:1fr 1fr}.tracker-form{grid-template-columns:1fr}.tracker-form textarea{height:72px}.news-item{grid-template-columns:78px 1fr}.news-thumb{width:78px;height:62px}}
+
+/* ---------- Embedded AI Assistant ---------- */
+.ai-panel{padding:0;overflow:hidden;background:rgba(255,255,255,.94)}
+.ai-head{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 24px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,rgba(8,45,62,.97),rgba(21,102,116,.93));color:#fff}
+.ai-head .card-title{color:#fff;margin:0}.ai-head .card-sub{color:rgba(255,255,255,.78);margin-top:6px}
+.ai-status{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;white-space:nowrap}.ai-status span:first-child{width:9px;height:9px;border-radius:50%;background:#23d18b;box-shadow:0 0 0 4px rgba(35,209,139,.15)}
+.ai-layout{display:grid;grid-template-columns:250px 1fr;min-height:600px}.ai-side{padding:20px;border-right:1px solid var(--border);background:#f7f8f7}.ai-side-title{font-size:12px;font-weight:800;letter-spacing:.08em;color:#6b7280;margin-bottom:12px}.ai-prompt{width:100%;text-align:left;border:1px solid #dfe4e2;background:#fff;border-radius:10px;padding:11px 12px;margin-bottom:8px;font:600 12px Inter,sans-serif;color:#27313a;cursor:pointer}.ai-prompt:hover{border-color:#247b8a;transform:translateY(-1px)}.ai-context-box{margin-top:16px;padding:12px;border-radius:10px;background:#e9f4f4;border:1px solid #cfe3e3;color:#4b6267;font-size:11px;line-height:1.55}
+.ai-chat{display:flex;flex-direction:column;min-width:0}.ai-messages{flex:1;overflow:auto;padding:22px;background:linear-gradient(180deg,#fbfcfc,#f4f7f6)}.ai-message{display:flex;gap:10px;align-items:flex-start;margin-bottom:18px}.ai-message.user{flex-direction:row-reverse}.ai-avatar{width:30px;height:30px;flex:0 0 30px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:#175e6b;color:#fff;font-size:10px;font-weight:800}.ai-message.user .ai-avatar{background:#26343c}.ai-bubble{max-width:82%;padding:12px 14px;border-radius:14px;background:#fff;border:1px solid #e1e6e4;box-shadow:0 2px 8px rgba(20,40,45,.04);font-size:13px;line-height:1.6;white-space:pre-wrap}.ai-message.user .ai-bubble{background:#e7f2f3;border-color:#c9dfe2}.ai-compose{display:flex;gap:10px;padding:14px;border-top:1px solid var(--border);background:#fff}.ai-compose textarea{flex:1;resize:none;border:1px solid #d5dcda;border-radius:12px;padding:12px 14px;font:13px Inter,sans-serif;outline:none}.ai-compose textarea:focus{border-color:#2b8391;box-shadow:0 0 0 3px rgba(43,131,145,.1)}.ai-send{border:0;border-radius:11px;background:#1c7080;color:#fff;padding:0 18px;font-weight:800;cursor:pointer}.ai-send:disabled{opacity:.55;cursor:not-allowed}.ai-config{display:flex;gap:10px;align-items:center;padding:0 14px 12px;background:#fff;flex-wrap:wrap}.ai-config label{font-size:10px;color:#737c82;font-weight:700;display:flex;align-items:center;gap:5px}.ai-config input{width:130px;border:1px solid #dce2df;border-radius:7px;padding:6px 8px;font-size:11px}.ai-config input:first-of-type{width:210px}.ai-clear{border:1px solid #d5dcda;background:#fff;border-radius:7px;padding:6px 9px;font-size:10px;cursor:pointer}.ai-note{padding:9px 14px 13px;font-size:10px;color:#7b8388;background:#fff}.ai-note code{background:#eef1ef;padding:2px 4px;border-radius:4px}@media(max-width:800px){.ai-layout{grid-template-columns:1fr}.ai-side{border-right:0;border-bottom:1px solid var(--border)}.ai-prompt{display:inline-block;width:auto;margin-right:6px}.ai-context-box{display:none}}
 </style>
 </head>
 <body>
@@ -645,15 +653,15 @@
         <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         Action Tracker
       </button>
-      <button class="nav-item" id="chatgpt-nav" type="button">
+      <button class="nav-item" data-panel="chatgpt" type="button">
         <svg viewBox="0 0 24 24"><path d="M12 3a4 4 0 0 1 3.8 5.2A4 4 0 0 1 18 15a4 4 0 0 1-4.8 3.9A4 4 0 0 1 7 17a4 4 0 0 1-.8-7.4A4 4 0 0 1 12 3Z"/><path d="M8 9.5h.01M16 9.5h.01M9 14c1.5 1 4.5 1 6 0"/></svg>
-        Akses ChatGPT
+        AI Assistant
       </button>
       <button class="nav-item" data-panel="notulensi">
         <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>
         Notulensi Rapat
       </button>
-      <div class="nav-hint">Home menampilkan berita batubara ter-update. Menu dashboard digunakan untuk monitoring kinerja, prognosa, action tracker, dan akses ChatGPT.</div>
+      <div class="nav-hint">Home menampilkan berita batubara ter-update. Menu dashboard digunakan untuk monitoring kinerja, prognosa, action tracker, dan AI Assistant.</div>
     </nav>
 
     <div class="content">
@@ -855,17 +863,40 @@
       </div>
 
       <div class="panel" id="panel-chatgpt">
-        <div class="card chat-panel">
-          <div class="card-title">AKSES CHATGPT</div>
-          <div class="card-sub">Akses ChatGPT langsung dari dashboard untuk analisis, penyusunan laporan, brainstorming, atau pekerjaan lainnya.</div>
-          <div class="chat-access" style="margin-top:16px;">
+        <div class="card ai-panel">
+          <div class="ai-head">
             <div>
-              <h3>ChatGPT</h3>
-              <p>Untuk keamanan dan kompatibilitas browser, ChatGPT dibuka pada tab baru. Dashboard tetap terbuka di tab ini.</p>
+              <div class="card-title">AI ASSISTANT · COAL BUSINESS DEVELOPMENT</div>
+              <div class="card-sub">Asisten AI di dalam dashboard untuk menganalisis KPI, prognosa, action tracker, dan menyusun ringkasan manajemen.</div>
             </div>
-            <button class="chat-btn" id="open-chatgpt">↗ Buka ChatGPT</button>
+            <div class="ai-status"><span id="ai-status-dot"></span><span id="ai-status-text">Siap</span></div>
           </div>
-          <div class="info-strip" style="margin-top:14px;margin-bottom:0;">Catatan: halaman ChatGPT tidak di-embed ke dalam iframe dashboard karena situs dapat menerapkan kebijakan keamanan browser yang mencegah embedding. Tombol di atas membuka <b>chatgpt.com</b> langsung.</div>
+          <div class="ai-layout">
+            <aside class="ai-side">
+              <div class="ai-side-title">Pertanyaan Cepat</div>
+              <button class="ai-prompt" data-prompt="Analisis KPI mana yang paling berisiko tidak mencapai target dan jelaskan alasannya.">📊 Analisis KPI berisiko</button>
+              <button class="ai-prompt" data-prompt="Buat executive summary singkat berdasarkan pencapaian kinerja yang ada di dashboard.">📝 Executive summary</button>
+              <button class="ai-prompt" data-prompt="Analisis prognosa sampai Desember dan berikan indikator yang perlu mendapat perhatian.">📈 Analisis prognosa</button>
+              <button class="ai-prompt" data-prompt="Ringkas seluruh action tracker menjadi daftar prioritas tindak lanjut.">🎯 Ringkas action tracker</button>
+              <button class="ai-prompt" data-prompt="Buat draft bahan paparan manajemen berdasarkan data dashboard saat ini.">📑 Draft bahan paparan</button>
+              <div class="ai-context-box"><b>Konteks otomatis</b><br>AI menerima ringkasan data KPI, prognosa, dan action tracker yang tersimpan di dashboard.</div>
+            </aside>
+            <section class="ai-chat">
+              <div class="ai-messages" id="ai-messages">
+                <div class="ai-message assistant"><div class="ai-avatar">AI</div><div class="ai-bubble">Halo. Saya AI Assistant untuk <b>Coal Business Development PLN EPI</b>. Saya dapat membantu menganalisis data dashboard, membuat executive summary, menilai prognosa, dan merangkum action tracker.</div></div>
+              </div>
+              <div class="ai-compose">
+                <textarea id="ai-input" rows="2" placeholder="Tanyakan sesuatu tentang kinerja, prognosa, action tracker, atau batubara..."></textarea>
+                <button id="ai-send" class="ai-send">Kirim ↗</button>
+              </div>
+              <div class="ai-config">
+                <label>Endpoint AI <input id="ai-endpoint" value="/api/chat" aria-label="Endpoint AI"></label>
+                <label>Model <input id="ai-model" value="gpt-5" aria-label="Model"></label>
+                <button id="ai-clear" class="ai-clear">Hapus percakapan</button>
+              </div>
+              <div class="ai-note">Untuk deployment produksi, gunakan endpoint backend/serverless dan simpan <code>OPENAI_API_KEY</code> sebagai environment variable. Jangan menaruh API key di HTML/browser.</div>
+            </section>
+          </div>
         </div>
       </div>
 
@@ -1642,9 +1673,53 @@ document.getElementById("tracker-add").addEventListener("click",()=>{
 });
 renderActionTracker();
 
-/* ---------- ChatGPT access ---------- */
-document.getElementById('chatgpt-nav')?.addEventListener('click',()=>window.open('https://chatgpt.com/','_blank','noopener,noreferrer'));
-document.getElementById('open-chatgpt')?.addEventListener('click',()=>window.open('https://chatgpt.com/','_blank','noopener,noreferrer'));
+/* ---------- Embedded AI Assistant ---------- */
+const aiMessages = document.getElementById('ai-messages');
+const aiInput = document.getElementById('ai-input');
+const aiSend = document.getElementById('ai-send');
+const aiEndpoint = document.getElementById('ai-endpoint');
+const aiModel = document.getElementById('ai-model');
+const aiStatusText = document.getElementById('ai-status-text');
+const aiStatusDot = document.getElementById('ai-status-dot');
+
+function aiSetStatus(text, busy=false){
+  if(aiStatusText) aiStatusText.textContent=text;
+  if(aiStatusDot){ aiStatusDot.style.background = busy ? '#f4b740' : '#23d18b'; aiStatusDot.style.boxShadow = busy ? '0 0 0 4px rgba(244,183,64,.15)' : '0 0 0 4px rgba(35,209,139,.15)'; }
+}
+function aiAddMessage(role,text){
+  const wrap=document.createElement('div'); wrap.className='ai-message '+role;
+  const avatar=document.createElement('div'); avatar.className='ai-avatar'; avatar.textContent=role==='assistant'?'AI':'YOU';
+  const bubble=document.createElement('div'); bubble.className='ai-bubble'; bubble.textContent=text;
+  wrap.appendChild(avatar); wrap.appendChild(bubble); aiMessages.appendChild(wrap); aiMessages.scrollTop=aiMessages.scrollHeight;
+}
+function aiDashboardContext(){
+  const kpis = Array.isArray(indicators) ? indicators.map(x=>({indikator:x.nama,kategori:x.kategori,satuan:x.satuan,bobot:x.bobot,target:x.target,realisasi:x.realisasi,capaian:x.pct})) : [];
+  let forecast = {};
+  try{ forecast=JSON.parse(localStorage.getItem('dashboardForecast2026')||'{}'); }catch(e){}
+  let actions=[];
+  try{ actions=JSON.parse(localStorage.getItem('dashboardActionTracker2026')||'[]'); }catch(e){}
+  return {dashboard:'Coal Business Development PLN EPI · Execution Dashboard',periode:'2026',kpi:kpis,prognosa:forecast,action_tracker:actions};
+}
+async function aiAsk(){
+  const q=(aiInput?.value||'').trim(); if(!q) return;
+  aiAddMessage('user',q); aiInput.value=''; aiSend.disabled=true; aiSetStatus('Menganalisis…',true);
+  const context=aiDashboardContext();
+  const payload={model:aiModel?.value?.trim()||'gpt-5',message:q,context,history:Array.from(aiMessages.querySelectorAll('.ai-message')).slice(-12).map(m=>({role:m.classList.contains('user')?'user':'assistant',content:m.querySelector('.ai-bubble')?.textContent||''}))};
+  try{
+    const res=await fetch(aiEndpoint?.value?.trim()||'/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok) throw new Error(data.error||`HTTP ${res.status}`);
+    const answer=data.output_text||data.text||data.answer||data.message||'Tidak ada respons dari AI.';
+    aiAddMessage('assistant',answer); aiSetStatus('Online');
+  }catch(err){
+    aiAddMessage('assistant','AI belum terhubung ke backend. Pastikan endpoint '+(aiEndpoint?.value?.trim()||'/api/chat')+' tersedia dan OPENAI_API_KEY disimpan di server. Detail: '+err.message);
+    aiSetStatus('Belum terhubung');
+  }finally{ aiSend.disabled=false; aiInput.focus(); }
+}
+aiSend?.addEventListener('click',aiAsk);
+aiInput?.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();aiAsk();}});
+document.querySelectorAll('.ai-prompt').forEach(btn=>btn.addEventListener('click',()=>{aiInput.value=btn.dataset.prompt||'';aiInput.focus();}));
+document.getElementById('ai-clear')?.addEventListener('click',()=>{aiMessages.innerHTML='<div class="ai-message assistant"><div class="ai-avatar">AI</div><div class="ai-bubble">Percakapan dihapus. Silakan mulai pertanyaan baru.</div></div>';aiSetStatus('Siap');});
 
 /* ---------- Notulensi rapat ---------- */
 
