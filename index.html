@@ -15,14 +15,30 @@
     --bg:#EFEDE6;
   }
   *{box-sizing:border-box;}
+  html, body{ height:100%; }
   body{
     margin:0;
-    background: radial-gradient(circle at 15% 0%, #F5F3EC 0%, var(--bg) 45%), var(--bg);
+    background: var(--bg);
     font-family:'Inter', sans-serif;
     color:var(--ink);
     padding:24px 22px 50px;
+    position:relative;
   }
-  .wrap{max-width:1120px;margin:0 auto;}
+  .bg-scene{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    opacity:0.25;
+    z-index:0;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .bg-scene svg{
+    width:100%;
+    height:100%;
+  }
+  .wrap{max-width:1120px;margin:0 auto;position:relative;z-index:1;}
 
   .header-bar{
     display:flex;
@@ -46,6 +62,23 @@
   .header-center{
     flex:1;
     text-align:center;
+  }
+  .logo-mark{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-shrink:0;
+  }
+  .logo-mark .dot{
+    width:30px;height:30px;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-family:'Fraunces',serif;font-weight:700;font-size:14px;
+  }
+  .logo-mark .word{
+    font-family:'Fraunces',serif;font-weight:700;font-size:15px;line-height:1.15;
+  }
+  .logo-mark .word small{
+    display:block;font-family:'Inter',sans-serif;font-weight:500;font-size:9px;color:var(--ink-soft);letter-spacing:0.4px;
   }
 
   .eyebrow{font-size:11.5px;letter-spacing:1.2px;color:var(--ink-soft);margin-bottom:4px;}
@@ -170,6 +203,153 @@
   .main-table td:first-child{padding-left:0;}
   .footnote{margin-top:18px;font-size:11px;color:var(--ink-soft);text-align:center;}
 
+  /* ---------- Sidebar layout ---------- */
+  .app-shell{
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+  }
+  .sidebar{
+    width:210px;
+    flex-shrink:0;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:10px;
+    position:sticky;
+    top:16px;
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+  }
+  .sidebar-label{
+    font-size:10.5px;
+    letter-spacing:0.8px;
+    color:var(--ink-soft);
+    padding:8px 10px 4px;
+  }
+  .nav-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    border:none;
+    background:transparent;
+    width:100%;
+    text-align:left;
+    padding:9px 10px;
+    border-radius:7px;
+    font-family:'Inter',sans-serif;
+    font-size:12.5px;
+    font-weight:500;
+    color:var(--ink);
+    cursor:pointer;
+    transition:background 0.15s ease;
+  }
+  .nav-item:hover{background:#F4F2EC;}
+  .nav-item.active{background:var(--ink);color:#fff;}
+  .nav-item svg{width:16px;height:16px;flex-shrink:0;stroke:currentColor;stroke-width:1.7;fill:none;}
+  .nav-hint{
+    font-size:10.5px;
+    color:var(--ink-soft);
+    padding:10px 10px 2px;
+    line-height:1.5;
+    border-top:1px solid var(--border);
+    margin-top:6px;
+  }
+
+  .content{flex:1;min-width:0;}
+  .panel{display:none;}
+  .panel.visible{display:block;}
+  .empty-state{
+    background:#fff;
+    border:1px dashed var(--border);
+    border-radius:10px;
+    padding:34px 20px;
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:12.5px;
+  }
+  .empty-state svg{width:26px;height:26px;stroke:var(--ink-soft);stroke-width:1.4;margin-bottom:8px;}
+
+  /* ---------- Notulensi ---------- */
+  .notulensi-form{display:flex;flex-direction:column;gap:12px;margin-bottom:6px;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .form-field label{display:block;font-size:11.5px;color:var(--ink-soft);margin-bottom:5px;}
+  .form-field input[type="text"],
+  .form-field input[type="date"],
+  .form-field textarea{
+    width:100%;
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:8px 10px;
+    font-size:12.5px;
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    background:#fff;
+    resize:vertical;
+  }
+  .upload-box{
+    border:1.5px dashed var(--border);
+    border-radius:8px;
+    padding:16px;
+    text-align:center;
+    cursor:pointer;
+    color:var(--ink-soft);
+    font-size:12px;
+    transition:border-color 0.15s ease, background 0.15s ease;
+  }
+  .upload-box:hover{border-color:#3B4A9E;background:#F7F8FC;}
+  .upload-box svg{width:20px;height:20px;stroke:var(--ink-soft);stroke-width:1.5;margin-bottom:4px;}
+  .file-input{display:none;}
+  .file-preview-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+  .file-thumb{
+    position:relative;
+    width:64px;height:64px;
+    border-radius:6px;
+    overflow:hidden;
+    border:1px solid var(--border);
+    background:#F4F2EC;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .file-thumb img{width:100%;height:100%;object-fit:cover;}
+  .file-thumb .file-tag{font-size:9px;color:var(--ink-soft);text-align:center;padding:2px;word-break:break-all;}
+  .file-thumb .remove-x{
+    position:absolute;top:2px;right:2px;
+    width:16px;height:16px;border-radius:50%;
+    background:rgba(31,36,48,0.65);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:11px;cursor:pointer;border:none;line-height:1;
+  }
+  .save-btn{
+    align-self:flex-start;
+    border:none;
+    background:#3B4A9E;
+    color:#fff;
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:12.5px;
+    padding:9px 18px;
+    border-radius:7px;
+    cursor:pointer;
+  }
+  .save-btn:hover{background:#2F3B80;}
+  .notulensi-list{display:flex;flex-direction:column;gap:10px;margin-top:18px;}
+  .notulensi-entry{
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px 16px;
+  }
+  .notulensi-entry-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px;}
+  .notulensi-entry-title{font-weight:600;font-size:13px;}
+  .notulensi-entry-date{font-size:11px;color:var(--ink-soft);font-family:'JetBrains Mono',monospace;}
+  .notulensi-entry-notes{font-size:12.5px;color:var(--ink);white-space:pre-wrap;line-height:1.5;margin-bottom:8px;}
+  .delete-entry{
+    border:none;background:transparent;color:#993C1D;font-size:11px;cursor:pointer;font-family:'Inter',sans-serif;
+    padding:2px 6px;
+  }
+  .delete-entry:hover{text-decoration:underline;}
+  .notulensi-empty{font-size:12px;color:var(--ink-soft);text-align:center;padding:14px;}
+
   @media (max-width: 900px){
     .metrics{grid-template-columns:repeat(3,1fr);}
     .trends{grid-template-columns:1fr;}
@@ -177,121 +357,260 @@
     .monthly-grid{grid-template-columns:1fr;}
     .header-bar{flex-direction:column;text-align:center;}
     .header-logo{height:36px;}
+    .app-shell{flex-direction:column;}
+    .sidebar{width:100%;position:static;flex-direction:row;overflow-x:auto;}
+    .sidebar-label, .nav-hint{display:none;}
+    .form-row{grid-template-columns:1fr;}
   }
 </style>
 </head>
 <body>
+<div class="bg-scene" aria-hidden="true">
+  <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#3B4A9E"/>
+        <stop offset="100%" stop-color="#EFEDE6"/>
+      </linearGradient>
+    </defs>
+    <rect x="0" y="0" width="1600" height="900" fill="url(#sky)"/>
+
+    <!-- distant hills -->
+    <path d="M0 560 Q220 480 460 545 T900 530 T1600 560 V900 H0 Z" fill="#1F2430" opacity="0.35"/>
+    <path d="M0 610 Q260 540 540 600 T1050 580 T1600 615 V900 H0 Z" fill="#1F2430" opacity="0.5"/>
+
+    <!-- power line pylons -->
+    <g stroke="#1F2430" stroke-width="4" fill="none" opacity="0.6">
+      <path d="M120 430 L100 620 M120 430 L140 620 M100 470 L140 470 M105 520 L135 520"/>
+      <path d="M1460 400 L1440 610 M1460 400 L1480 610 M1440 445 L1480 445 M1445 500 L1475 500"/>
+      <path d="M120 445 Q790 380 1460 415" stroke-width="2"/>
+      <path d="M105 480 Q790 415 1475 450" stroke-width="2"/>
+    </g>
+
+    <!-- coal stockpiles -->
+    <path d="M40 700 Q160 590 300 700 Q380 630 470 700 Q560 610 660 700 L660 780 L40 780 Z" fill="#1F2430" opacity="0.85"/>
+    <path d="M900 720 Q1010 620 1130 720 Q1210 650 1310 720 L1310 790 L900 790 Z" fill="#1F2430" opacity="0.75"/>
+
+    <!-- conveyor tower -->
+    <g stroke="#1F2430" stroke-width="6" fill="none" opacity="0.7">
+      <path d="M700 780 L740 470 M820 780 L780 470 M740 470 L780 470"/>
+      <path d="M740 560 L980 460 M780 560 L1000 470"/>
+      <path d="M700 640 L820 640 M700 700 L820 700"/>
+    </g>
+    <rect x="960" y="440" width="70" height="34" fill="#1F2430" opacity="0.75"/>
+
+    <!-- excavator -->
+    <g transform="translate(300,660)" opacity="0.85">
+      <rect x="-70" y="30" width="170" height="26" rx="4" fill="#1F2430"/>
+      <circle cx="-45" cy="60" r="20" fill="#1F2430"/>
+      <circle cx="0" cy="60" r="20" fill="#1F2430"/>
+      <circle cx="55" cy="60" r="20" fill="#1F2430"/>
+      <rect x="-40" y="-30" width="90" height="55" rx="8" fill="#1F2430"/>
+      <path d="M10 -10 L110 -70 L130 -60 L60 5 Z" fill="#1F2430"/>
+      <path d="M110 -70 L150 -95 L165 -80 L135 -55 Z" fill="#1F2430"/>
+      <path d="M150 -95 L185 -75 L175 -55 L145 -70 Z" fill="#1F2430"/>
+    </g>
+
+    <!-- haul truck -->
+    <g transform="translate(1150,690)" opacity="0.85">
+      <path d="M-110 20 L-110 -25 Q-110 -45 -85 -45 L60 -45 Q95 -45 105 -15 L130 20 Z" fill="#1F2430"/>
+      <rect x="-150" y="20" width="300" height="18" rx="4" fill="#1F2430"/>
+      <circle cx="-95" cy="55" r="26" fill="#1F2430"/>
+      <circle cx="20" cy="55" r="30" fill="#1F2430"/>
+      <circle cx="95" cy="55" r="30" fill="#1F2430"/>
+      <rect x="-70" y="-38" width="55" height="30" rx="3" fill="#EFEDE6" opacity="0.5"/>
+    </g>
+
+    <!-- birds -->
+    <g stroke="#1F2430" stroke-width="3" fill="none" opacity="0.5">
+      <path d="M1240 150 q12 -14 24 0 q12 -14 24 0"/>
+      <path d="M1310 190 q10 -12 20 0 q10 -12 20 0"/>
+      <path d="M1180 200 q8 -10 16 0 q8 -10 16 0"/>
+    </g>
+  </svg>
+</div>
 <div class="wrap">
   <div class="header-bar">
-    <img class="header-logo" src="https://commons.wikimedia.org/wiki/Special:FilePath/Danantara_Indonesia.svg" alt="Logo Danantara Indonesia" />
+    <div class="logo-mark">
+      <span class="dot" style="background:#3B4A9E;">D</span>
+      <span class="word">Danantara<small>INDONESIA</small></span>
+    </div>
     <div class="header-center">
       <div class="eyebrow">PT PLN ENERGI PRIMER INDONESIA — SVP PENGEMBANGAN USAHA BATUBARA</div>
       <h1>REALISASI KONTRAK MANAJEMEN 2026 — S.D. JULI</h1>
     </div>
-    <img class="header-logo" src="https://cmsadmin.plnepi.co.id/storage/media/LOGO1671732315.png" alt="Logo PLN Energi Primer Indonesia" />
+    <div class="logo-mark">
+      <span class="word" style="text-align:right;">PLN EPI<small>ENERGI PRIMER INDONESIA</small></span>
+      <span class="dot" style="background:#0F6E56;">P</span>
+    </div>
   </div>
 
   <div class="metrics" id="metrics"></div>
 
-  <div class="trends">
-    <div class="card">
-      <div class="card-title">PENDAPATAN INOVATIF</div>
-      <div class="card-sub">kumulatif, Rp Miliar — Jan s.d. Jul 2026</div>
-      <div class="chart-box"><canvas id="chart-inovatif"></canvas></div>
-      <div class="legend-row">
-        <span><span class="swatch" style="background:#B4AFA0"></span> target</span>
-        <span><span class="swatch" style="background:#2F6F4E"></span> realisasi</span>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">PASOKAN BATUBARA — TAMBANG SENDIRI & AFILIASI</div>
-      <div class="card-sub">kumulatif, Ribu MT — Jan s.d. Jul 2026</div>
-      <div class="chart-box"><canvas id="chart-tambang"></canvas></div>
-      <div class="legend-row">
-        <span><span class="swatch" style="background:#B4AFA0"></span> target</span>
-        <span><span class="swatch" style="background:#2F6F4E"></span> realisasi</span>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">PASOKAN BATUBARA — KE COAL BLENDING FACILITY</div>
-      <div class="card-sub">kumulatif, Ribu MT — Jan s.d. Jul 2026</div>
-      <div class="chart-box"><canvas id="chart-blending"></canvas></div>
-      <div class="legend-row">
-        <span><span class="swatch" style="background:#B4AFA0"></span> target</span>
-        <span><span class="swatch" style="background:#2F6F4E"></span> realisasi</span>
-      </div>
-    </div>
-  </div>
+  <div class="app-shell">
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-label">MENU DASHBOARD</div>
+      <button class="nav-item" data-panel="grafik">
+        <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+        Grafik & Komposisi
+      </button>
+      <button class="nav-item" data-panel="bulanan">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Pencapaian Bulanan
+      </button>
+      <button class="nav-item" data-panel="rincian">
+        <svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg>
+        Rincian Indikator
+      </button>
+      <button class="nav-item" data-panel="notulensi">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>
+        Notulensi Rapat
+      </button>
+      <div class="nav-hint">Pilih menu untuk menampilkan detail. Tampilan awal hanya menampilkan ringkasan 6 kinerja utama.</div>
+    </nav>
 
-  <div class="donuts">
-    <div class="card">
-      <div class="card-title">KOMPOSISI BOBOT KATEGORI KPI (A · TOTAL 40)</div>
-      <div class="donut-flex">
-        <div class="donut-canvas-wrap"><canvas id="donut-a"></canvas></div>
-        <div class="donut-legend" id="legend-a"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">KOMPOSISI BOBOT PERFORMANCE INDICATORS (B · TOTAL 60)</div>
-      <div class="donut-flex">
-        <div class="donut-canvas-wrap"><canvas id="donut-b"></canvas></div>
-        <div class="donut-legend" id="legend-b"></div>
-      </div>
-    </div>
-  </div>
+    <div class="content">
+      <div class="panel" id="panel-grafik">
+        <div class="trends">
+          <div class="card">
+            <div class="card-title">PENDAPATAN INOVATIF</div>
+            <div class="card-sub">kumulatif, Rp Miliar — Jan s.d. Jul 2026</div>
+            <div class="chart-box"><canvas id="chart-inovatif"></canvas></div>
+            <div class="legend-row">
+              <span><span class="swatch" style="background:#B4AFA0"></span> target</span>
+              <span><span class="swatch" style="background:#2F6F4E"></span> realisasi</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">PASOKAN BATUBARA — TAMBANG SENDIRI & AFILIASI</div>
+            <div class="card-sub">kumulatif, Ribu MT — Jan s.d. Jul 2026</div>
+            <div class="chart-box"><canvas id="chart-tambang"></canvas></div>
+            <div class="legend-row">
+              <span><span class="swatch" style="background:#B4AFA0"></span> target</span>
+              <span><span class="swatch" style="background:#2F6F4E"></span> realisasi</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">PASOKAN BATUBARA — KE COAL BLENDING FACILITY</div>
+            <div class="card-sub">kumulatif, Ribu MT — Jan s.d. Jul 2026</div>
+            <div class="chart-box"><canvas id="chart-blending"></canvas></div>
+            <div class="legend-row">
+              <span><span class="swatch" style="background:#B4AFA0"></span> target</span>
+              <span><span class="swatch" style="background:#2F6F4E"></span> realisasi</span>
+            </div>
+          </div>
+        </div>
 
-  <div class="card monthly-card">
-    <div class="monthly-head">
-      <div class="card-title">PENCAPAIAN BULANAN PER INDIKATOR</div>
-      <select id="monthly-select"></select>
-    </div>
-    <div class="card-sub" id="monthly-satuan"></div>
-    <div class="monthly-grid">
-      <table>
-        <thead>
-          <tr>
-            <th>Bulan</th>
-            <th class="right">Target</th>
-            <th class="right">Realisasi</th>
-            <th class="right">Capaian</th>
-          </tr>
-        </thead>
-        <tbody id="monthly-table-body"></tbody>
-      </table>
-      <div>
-        <div class="mini-chart-title">Tren capaian (%) per bulan</div>
-        <div class="mini-chart-box"><canvas id="chart-monthly"></canvas></div>
+        <div class="donuts">
+          <div class="card">
+            <div class="card-title">KOMPOSISI BOBOT KATEGORI KPI (A · TOTAL 40)</div>
+            <div class="donut-flex">
+              <div class="donut-canvas-wrap"><canvas id="donut-a"></canvas></div>
+              <div class="donut-legend" id="legend-a"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">KOMPOSISI BOBOT PERFORMANCE INDICATORS (B · TOTAL 60)</div>
+            <div class="donut-flex">
+              <div class="donut-canvas-wrap"><canvas id="donut-b"></canvas></div>
+              <div class="donut-legend" id="legend-b"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-bulanan">
+        <div class="card monthly-card">
+          <div class="monthly-head">
+            <div class="card-title">PENCAPAIAN BULANAN PER INDIKATOR</div>
+            <select id="monthly-select"></select>
+          </div>
+          <div class="card-sub" id="monthly-satuan"></div>
+          <div class="monthly-grid">
+            <table>
+              <thead>
+                <tr>
+                  <th>Bulan</th>
+                  <th class="right">Target</th>
+                  <th class="right">Realisasi</th>
+                  <th class="right">Capaian</th>
+                </tr>
+              </thead>
+              <tbody id="monthly-table-body"></tbody>
+            </table>
+            <div>
+              <div class="mini-chart-title">Tren capaian (%) per bulan</div>
+              <div class="mini-chart-box"><canvas id="chart-monthly"></canvas></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-rincian">
+        <div class="card">
+          <div class="table-head">
+            <div class="card-title">RINCIAN INDIKATOR KINERJA — REALISASI S.D. JULI 2026</div>
+            <div class="tabs" id="tabs">
+              <button data-k="Semua" class="active">Semua</button>
+              <button data-k="A">Kategori A</button>
+              <button data-k="B">Kategori B</button>
+            </div>
+          </div>
+          <table class="main-table">
+            <thead>
+              <tr>
+                <th>Indikator</th>
+                <th>Satuan</th>
+                <th class="right">Bobot</th>
+                <th class="right">Target</th>
+                <th class="right">Realisasi</th>
+                <th class="right">Capaian</th>
+              </tr>
+            </thead>
+            <tbody id="main-table-body"></tbody>
+          </table>
+        </div>
+        <div class="footnote">
+          Sumber: berkas "REALISASI USULAN KONTRAK MANAJEMEN TAHUN 2026" — realisasi s.d. Juli 2026, Jakarta 5 Agustus 2026.
+          Catatan: pada indikator Pengendalian Anggaran Operasi, capaian dihitung berdasarkan efisiensi penyerapan anggaran (penyerapan rendah = capaian tinggi).
+        </div>
+      </div>
+
+      <div class="panel" id="panel-notulensi">
+        <div class="card">
+          <div class="card-title">CATAT NOTULENSI RAPAT</div>
+          <div class="card-sub">Simpan ringkasan pembahasan rapat beserta foto/dokumentasi pendukung.</div>
+          <div class="notulensi-form">
+            <div class="form-row">
+              <div class="form-field">
+                <label>Tanggal rapat</label>
+                <input type="date" id="notulensi-tanggal" />
+              </div>
+              <div class="form-field">
+                <label>Judul / agenda rapat</label>
+                <input type="text" id="notulensi-judul" placeholder="Contoh: Evaluasi kinerja Juli 2026" />
+              </div>
+            </div>
+            <div class="form-field">
+              <label>Catatan notulensi</label>
+              <textarea id="notulensi-catatan" rows="5" placeholder="Tuliskan poin pembahasan, keputusan, dan tindak lanjut rapat..."></textarea>
+            </div>
+            <div class="form-field">
+              <label>Foto / dokumentasi rapat</label>
+              <div class="upload-box" id="upload-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 8 5-5 5 5"/><path d="M5 21h14"/></svg>
+                <div>Klik untuk unggah foto atau dokumen (bisa lebih dari satu)</div>
+              </div>
+              <input type="file" id="notulensi-file" class="file-input" accept="image/*,.pdf,.doc,.docx" multiple />
+              <div class="file-preview-row" id="file-preview-row"></div>
+            </div>
+            <button class="save-btn" id="notulensi-save">Simpan Notulensi</button>
+          </div>
+
+          <div class="notulensi-list" id="notulensi-list"></div>
+        </div>
       </div>
     </div>
-  </div>
-
-  <div class="card">
-    <div class="table-head">
-      <div class="card-title">RINCIAN INDIKATOR KINERJA — REALISASI S.D. JULI 2026</div>
-      <div class="tabs" id="tabs">
-        <button data-k="Semua" class="active">Semua</button>
-        <button data-k="A">Kategori A</button>
-        <button data-k="B">Kategori B</button>
-      </div>
-    </div>
-    <table class="main-table">
-      <thead>
-        <tr>
-          <th>Indikator</th>
-          <th>Satuan</th>
-          <th class="right">Bobot</th>
-          <th class="right">Target</th>
-          <th class="right">Realisasi</th>
-          <th class="right">Capaian</th>
-        </tr>
-      </thead>
-      <tbody id="main-table-body"></tbody>
-    </table>
-  </div>
-
-  <div class="footnote">
-    Sumber: berkas "REALISASI USULAN KONTRAK MANAJEMEN TAHUN 2026" — realisasi s.d. Juli 2026, Jakarta 5 Agustus 2026.
-    Catatan: pada indikator Pengendalian Anggaran Operasi, capaian dihitung berdasarkan efisiensi penyerapan anggaran (penyerapan rendah = capaian tinggi).
   </div>
 </div>
 
@@ -598,8 +917,10 @@ metricBlocks.forEach(m => {
 
 /* ---------- Trend line charts ---------- */
 
+const allCharts = [];
+
 function makeTrendChart(canvasId, data){
-  new Chart(document.getElementById(canvasId), {
+  const c = new Chart(document.getElementById(canvasId), {
     type: "line",
     data: {
       labels: data.map(d => d.bulan),
@@ -645,6 +966,7 @@ function makeTrendChart(canvasId, data){
       },
     },
   });
+  allCharts.push(c);
 }
 
 makeTrendChart("chart-inovatif", pendapatanInovatif);
@@ -654,7 +976,7 @@ makeTrendChart("chart-blending", pasokanBlending);
 /* ---------- Donut charts ---------- */
 
 function makeDonut(canvasId, legendId, data){
-  new Chart(document.getElementById(canvasId), {
+  const c = new Chart(document.getElementById(canvasId), {
     type: "doughnut",
     data: {
       labels: data.map(d => d.nama),
@@ -678,6 +1000,7 @@ function makeDonut(canvasId, legendId, data){
       },
     },
   });
+  allCharts.push(c);
 
   const legendEl = document.getElementById(legendId);
   data.forEach(d => {
@@ -807,6 +1130,140 @@ tabsEl.querySelectorAll("button").forEach(btn => {
 });
 
 renderMainTable();
+
+/* ---------- Sidebar navigation ---------- */
+
+const sidebarEl = document.getElementById("sidebar");
+const navItems = sidebarEl.querySelectorAll(".nav-item");
+const panels = document.querySelectorAll(".panel");
+
+function showPanel(name){
+  panels.forEach(p => p.classList.toggle("visible", p.id === "panel-" + name));
+  navItems.forEach(b => b.classList.toggle("active", b.dataset.panel === name));
+  // Chart.js butuh resize manual karena canvas sempat dirender saat panel masih hidden
+  requestAnimationFrame(() => {
+    if (name === "grafik") allCharts.forEach(c => c.resize());
+    if (name === "bulanan" && monthlyChart) monthlyChart.resize();
+  });
+}
+
+navItems.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const isActive = btn.classList.contains("active");
+    if (isActive) {
+      // klik ulang menu aktif -> kembali ke tampilan standby (hanya ringkasan)
+      panels.forEach(p => p.classList.remove("visible"));
+      navItems.forEach(b => b.classList.remove("active"));
+    } else {
+      showPanel(btn.dataset.panel);
+    }
+  });
+});
+
+/* ---------- Notulensi rapat ---------- */
+
+const uploadBox = document.getElementById("upload-box");
+const fileInput = document.getElementById("notulensi-file");
+const filePreviewRow = document.getElementById("file-preview-row");
+const notulensiList = document.getElementById("notulensi-list");
+const notulensiSaveBtn = document.getElementById("notulensi-save");
+
+let pendingFiles = [];
+let notulensiEntries = [];
+
+uploadBox.addEventListener("click", () => fileInput.click());
+
+fileInput.addEventListener("change", (e) => {
+  Array.from(e.target.files).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      pendingFiles.push({ name: file.name, type: file.type, dataUrl: ev.target.result });
+      renderFilePreview();
+    };
+    reader.readAsDataURL(file);
+  });
+  fileInput.value = "";
+});
+
+function renderFilePreview(){
+  filePreviewRow.innerHTML = "";
+  pendingFiles.forEach((f, idx) => {
+    const thumb = document.createElement("div");
+    thumb.className = "file-thumb";
+    if (f.type.startsWith("image/")) {
+      thumb.innerHTML = `<img src="${f.dataUrl}" alt="${f.name}" />`;
+    } else {
+      thumb.innerHTML = `<span class="file-tag">${f.name}</span>`;
+    }
+    const removeBtn = document.createElement("button");
+    removeBtn.className = "remove-x";
+    removeBtn.textContent = "×";
+    removeBtn.addEventListener("click", () => {
+      pendingFiles.splice(idx, 1);
+      renderFilePreview();
+    });
+    thumb.appendChild(removeBtn);
+    filePreviewRow.appendChild(thumb);
+  });
+}
+
+function renderNotulensiList(){
+  if (notulensiEntries.length === 0) {
+    notulensiList.innerHTML = `<div class="notulensi-empty">Belum ada notulensi yang dicatat.</div>`;
+    return;
+  }
+  notulensiList.innerHTML = "";
+  notulensiEntries.forEach((entry, idx) => {
+    const div = document.createElement("div");
+    div.className = "notulensi-entry";
+    const filesHtml = entry.files.map(f =>
+      f.type.startsWith("image/")
+        ? `<div class="file-thumb"><img src="${f.dataUrl}" alt="${f.name}" /></div>`
+        : `<div class="file-thumb"><span class="file-tag">${f.name}</span></div>`
+    ).join("");
+    div.innerHTML = `
+      <div class="notulensi-entry-head">
+        <div>
+          <div class="notulensi-entry-title">${entry.judul || "(Tanpa judul)"}</div>
+          <div class="notulensi-entry-date">${entry.tanggal || "-"}</div>
+        </div>
+        <button class="delete-entry" data-idx="${idx}">Hapus</button>
+      </div>
+      <div class="notulensi-entry-notes">${entry.catatan || "-"}</div>
+      ${filesHtml ? `<div class="file-preview-row">${filesHtml}</div>` : ""}
+    `;
+    notulensiList.appendChild(div);
+  });
+
+  notulensiList.querySelectorAll(".delete-entry").forEach(btn => {
+    btn.addEventListener("click", () => {
+      notulensiEntries.splice(Number(btn.dataset.idx), 1);
+      renderNotulensiList();
+    });
+  });
+}
+
+notulensiSaveBtn.addEventListener("click", () => {
+  const tanggal = document.getElementById("notulensi-tanggal").value;
+  const judul = document.getElementById("notulensi-judul").value.trim();
+  const catatan = document.getElementById("notulensi-catatan").value.trim();
+
+  if (!judul && !catatan) {
+    alert("Isi minimal judul atau catatan rapat sebelum menyimpan.");
+    return;
+  }
+
+  notulensiEntries.unshift({ tanggal, judul, catatan, files: pendingFiles.slice() });
+
+  document.getElementById("notulensi-tanggal").value = "";
+  document.getElementById("notulensi-judul").value = "";
+  document.getElementById("notulensi-catatan").value = "";
+  pendingFiles = [];
+  renderFilePreview();
+  renderNotulensiList();
+});
+
+renderNotulensiList();
 </script>
 </body>
 </html>
