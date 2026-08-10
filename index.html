@@ -718,8 +718,12 @@ body{
 .metric .value{font-size:16px;letter-spacing:-.3px}
 .metric .sub{font-size:8.5px}
 
-/* News / summary */
-.home-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(310px,.83fr);gap:12px;margin-bottom:12px}
+/* News / market / alerts */
+.home-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(250px,.72fr) minmax(250px,.72fr);grid-template-rows:auto auto;gap:12px;margin-bottom:12px}
+.news-card{grid-column:1;grid-row:1 / span 2}
+.market-price-card{grid-column:2;grid-row:1}
+.market-summary-card{grid-column:2;grid-row:2}
+.alert-card{grid-column:3;grid-row:1 / span 2}
 .news-card,.market-card{
   background:rgba(255,255,255,.98);border:1px solid #dce5eb;border-radius:13px;
   box-shadow:0 7px 20px rgba(29,58,79,.08);overflow:hidden
@@ -750,6 +754,9 @@ body{
 .status-bars em{font-style:normal;font-weight:800;text-align:right}
 .source-note{font-size:7.5px;color:#8b969d;padding:8px 14px 11px;border-top:1px solid #edf1f3}
 
+/* Home market price / summary / alert cards */
+.price-list{padding:3px 14px 5px}.price-row{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:7px;padding:9px 0;border-bottom:1px solid #edf1f3}.price-row:last-child{border-bottom:0}.price-row b{display:block;font-size:9.5px}.price-row small{display:block;font-size:7.6px;color:#88949b;margin-top:2px}.price-row strong{font-family:'JetBrains Mono',monospace;font-size:13px;color:#173646}.price-unit{font-size:7.5px;color:#7a8992;background:#edf4f7;border-radius:999px;padding:4px 5px}.market-summary-list .perf-row{padding:8px 0}.market-summary-list .perf-row strong{font-size:10.5px}.down{font-size:8px;color:#d84a3a;background:#fff0ee;border-radius:999px;padding:4px 6px;font-weight:800}.alert-list{padding:4px 14px 7px}.alert-item{display:grid;grid-template-columns:24px 1fr;gap:8px;padding:11px 0;border-bottom:1px solid #edf1f3}.alert-item:last-child{border-bottom:0}.alert-icon{width:21px;height:21px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900}.weather-alert .alert-icon{background:#fff3ce;color:#e5a400}.regulation-alert .alert-icon{background:#e9f2ff;color:#3b82c4}.supply-alert .alert-icon{background:#e7f7ed;color:#18a45e}.alert-item b{font-size:9.5px;color:#263d49}.alert-item p{font-size:8px;line-height:1.4;color:#667780;margin:3px 0}.alert-item small{font-size:7.2px;color:#9aa4aa}.alert-card .source-note{margin-top:auto}
+
 /* Home lower row */
 .home-bottom{display:grid;grid-template-columns:1.35fr .9fr .9fr;gap:12px}
 .home-chart-card,.home-status-card,.home-forecast-card{min-height:225px}
@@ -776,7 +783,7 @@ body{
 .save-btn{background:#0b75bc}
 @media(max-width:1100px){
   .metrics{grid-template-columns:repeat(3,1fr)}
-  .home-bottom{grid-template-columns:1fr 1fr}
+  .home-grid{grid-template-columns:1fr 1fr}.news-card{grid-column:1/-1;grid-row:auto}.market-price-card,.market-summary-card,.alert-card{grid-column:auto;grid-row:auto}.home-bottom{grid-template-columns:1fr 1fr}
   .home-chart-card{grid-column:1/-1}
 }
 @media(max-width:800px){
@@ -785,7 +792,7 @@ body{
   .sidebar{width:100%;min-height:auto;position:static;display:flex;overflow:auto;padding:8px;gap:4px}
   .sidebar-label,.nav-hint{display:none}.nav-item{min-width:max-content}
   .app-shell{flex-direction:column}.content{padding:12px}
-  .home-grid,.home-bottom{grid-template-columns:1fr}.hero-meta{display:none}
+  .home-grid,.home-bottom{grid-template-columns:1fr}.news-card,.market-price-card,.market-summary-card,.alert-card{grid-column:auto;grid-row:auto}.hero-meta{display:none}
 }
 @media(max-width:600px){
   .metrics{grid-template-columns:1fr 1fr}.home-title{font-size:24px}
@@ -999,26 +1006,52 @@ Coal Blending Facility
       </div>
     </section>
 
-    <aside class="market-card">
+    <section class="market-card market-price-card">
       <div class="market-head">
         <div>
-          <div class="news-title">Ringkasan Kinerja</div>
-          <div class="news-sub">Realisasi s.d. Juli 2026</div>
+          <div class="news-title">⛏ Harga Batubara</div>
+          <div class="news-sub">Real-time / USD per ton</div>
+        </div>
+        <span class="update-label">10 Agu 2026</span>
+      </div>
+      <div class="price-list">
+        <div class="price-row"><div><b>ICE Newcastle</b><small>Global thermal coal benchmark</small></div><strong id="price-newcastle">127,85</strong><span class="price-unit">USD/t</span></div>
+        <div class="price-row"><div><b>ICE Richmond</b><small>US thermal coal benchmark</small></div><strong id="price-richmond">120,60</strong><span class="price-unit">USD/t</span></div>
+        <div class="price-row"><div><b>Batubara ICI4</b><small>GAR 4.200 / NAR 3.800</small></div><strong id="price-ici4">63,32</strong><span class="price-unit">USD/t</span></div>
+      </div>
+      <div class="source-note">Sumber: ICE/market data; ICI4 merupakan indeks mingguan batubara Indonesia.</div>
+    </section>
+
+    <section class="market-card market-summary-card">
+      <div class="market-head">
+        <div>
+          <div class="news-title">🌐 Ringkasan Pasar</div>
+          <div class="news-sub">Indikator utama batubara</div>
         </div>
         <span class="update-label">Update terbaru</span>
       </div>
-      <div class="performance-list">
-        <div class="perf-row"><div><b>Pendapatan service fee</b><small>Rp Miliar</small></div><strong>398,56</strong><span class="up">105,0%</span></div>
-        <div class="perf-row"><div><b>Pendapatan inovatif</b><small>Rp Miliar</small></div><strong>4.056,68</strong><span class="up">110,0%</span></div>
-        <div class="perf-row"><div><b>Pasokan tambang &amp; afiliasi</b><small>Ribu MT</small></div><strong>541,6</strong><span class="up">110,0%</span></div>
-        <div class="perf-row"><div><b>Pasokan ke CBF</b><small>Ribu MT</small></div><strong>359,5</strong><span class="up">102,7%</span></div>
+      <div class="performance-list market-summary-list">
+        <div class="perf-row"><div><b>ICE Newcastle</b></div><strong>127,85</strong><span class="up">USD/t</span></div>
+        <div class="perf-row"><div><b>ICE Richmond</b></div><strong>120,60</strong><span class="up">USD/t</span></div>
+        <div class="perf-row"><div><b>Harga DMO</b></div><strong>70,00</strong><span class="up">USD/t</span></div>
+        <div class="perf-row"><div><b>Kurs USD/IDR</b></div><strong id="market-usdidr">15.821</strong><span class="down">− 0,3%</span></div>
       </div>
-      <div class="market-mini-title">Status indikator</div>
-      <div class="status-bars">
-        <div><span>≥ 100%</span><b><i style="width:100%"></i></b><em>15</em></div>
-        <div><span>&lt; 100%</span><b><i style="width:0%"></i></b><em>0</em></div>
+    </section>
+
+    <aside class="market-card alert-card">
+      <div class="market-head">
+        <div>
+          <div class="news-title">🔔 Peringatan &amp; Informasi</div>
+          <div class="news-sub">Cuaca dan regulasi terkait batubara</div>
+        </div>
+        <span class="update-label">Live</span>
       </div>
-      <div class="source-note">Sumber: data kinerja internal Coal Business Development PLN EPI</div>
+      <div class="alert-list">
+        <div class="alert-item weather-alert"><span class="alert-icon">●</span><div><b>Peringatan Cuaca</b><p>Potensi hujan sedang dan angin kencang di sejumlah wilayah. Pantau kondisi pelabuhan dan jalur hauling.</p><small>Update BMKG · 10 Agu 2026</small></div></div>
+        <div class="alert-item regulation-alert"><span class="alert-icon">i</span><div><b>Regulasi Pemerintah</b><p>Pemerintah terus memperkuat pengendalian produksi dan pemenuhan DMO untuk menjaga pasokan domestik.</p><small>Monitoring regulasi ESDM · 10 Agu 2026</small></div></div>
+        <div class="alert-item supply-alert"><span class="alert-icon">✓</span><div><b>Pasokan</b><p>Perlu menjaga kecukupan stok batubara PLTU dan mengantisipasi gangguan cuaca/logistik.</p><small>Prioritas monitoring</small></div></div>
+      </div>
+      <div class="source-note">Sumber: BMKG &amp; informasi/regulasi pemerintah terkait minerba. Status diperbarui berkala.</div>
     </aside>
   </div>
 
@@ -2324,6 +2357,13 @@ showPanel('home');
     const saved=JSON.parse(localStorage.getItem('coal_blending_rows')||'null');
     if(saved&&Array.isArray(saved.rows)&&saved.rows.length){headers=saved.headers||[];rows=saved.rows;fileName.textContent=`✓ ${saved.name||'Data tersimpan'} · ${rows.length.toLocaleString('id-ID')} baris`;updateSummary();render();}
   }catch(e){}
+})();
+</script>
+<script>
+/* ---------- Home market snapshot ---------- */
+(function(){
+  const snapshot={newcastle:'127,85',richmond:'120,60',ici4:'63,32',usdidr:'15.821'};
+  Object.entries(snapshot).forEach(([id,val])=>{const el=document.getElementById(id==='newcastle'?'price-newcastle':id==='richmond'?'price-richmond':id==='ici4'?'price-ici4':'market-usdidr');if(el)el.textContent=val;});
 })();
 </script>
 <script>
