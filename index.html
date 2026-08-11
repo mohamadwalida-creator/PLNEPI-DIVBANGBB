@@ -1010,16 +1010,16 @@ Coal Blending Facility
       <div class="market-head">
         <div>
           <div class="news-title">⛏ Harga Batubara</div>
-          <div class="news-sub">Real-time / USD per ton</div>
+          <div class="news-sub">Live / USD per ton</div>
         </div>
-        <span class="update-label">10 Agu 2026</span>
+        <span class="update-label" id="price-update-label">Menghubungkan…</span>
       </div>
       <div class="price-list">
-        <div class="price-row"><div><b>ICE Newcastle</b><small>Global thermal coal benchmark</small></div><strong id="price-newcastle">127,85</strong><span class="price-unit">USD/t</span></div>
-        <div class="price-row"><div><b>ICE Richmond</b><small>US thermal coal benchmark</small></div><strong id="price-richmond">120,60</strong><span class="price-unit">USD/t</span></div>
-        <div class="price-row"><div><b>Batubara ICI4</b><small>GAR 4.200 / NAR 3.800</small></div><strong id="price-ici4">63,32</strong><span class="price-unit">USD/t</span></div>
+        <div class="price-row"><div><b>ICE Newcastle</b><small>Global thermal coal benchmark (stooq: LQ.F)</small></div><strong id="price-newcastle">—</strong><span class="price-unit">USD/t</span></div>
+        <div class="price-row"><div><b>API2 Rotterdam</b><small>Coal futures benchmark (stooq: MTF.F)</small></div><strong id="price-richmond">—</strong><span class="price-unit">USD/t</span></div>
+        <div class="price-row"><div><b>Batubara ICI4</b><small>GAR 4.200 / NAR 3.800 (indeks mingguan)</small></div><strong id="price-ici4">—</strong><span class="price-unit">USD/t</span></div>
       </div>
-      <div class="source-note">Sumber: ICE/market data; ICI4 merupakan indeks mingguan batubara Indonesia.</div>
+      <div class="source-note" id="price-source-note">Menghubungkan ke sumber data live (stooq.com)…</div>
     </section>
 
     <section class="market-card market-summary-card">
@@ -1028,13 +1028,13 @@ Coal Blending Facility
           <div class="news-title">🌐 Ringkasan Pasar</div>
           <div class="news-sub">Indikator utama batubara</div>
         </div>
-        <span class="update-label">Update terbaru</span>
+        <span class="update-label" id="summary-update-label">Menghubungkan…</span>
       </div>
       <div class="performance-list market-summary-list">
-        <div class="perf-row"><div><b>ICE Newcastle</b></div><strong>127,85</strong><span class="up">USD/t</span></div>
-        <div class="perf-row"><div><b>ICE Richmond</b></div><strong>120,60</strong><span class="up">USD/t</span></div>
+        <div class="perf-row"><div><b>ICE Newcastle</b></div><strong id="summary-newcastle">—</strong><span class="up" id="summary-newcastle-chg">USD/t</span></div>
+        <div class="perf-row"><div><b>API2 Rotterdam</b></div><strong id="summary-richmond">—</strong><span class="up" id="summary-richmond-chg">USD/t</span></div>
         <div class="perf-row"><div><b>Harga DMO</b></div><strong>70,00</strong><span class="up">USD/t</span></div>
-        <div class="perf-row"><div><b>Kurs USD/IDR</b></div><strong id="market-usdidr">15.821</strong><span class="down">− 0,3%</span></div>
+        <div class="perf-row"><div><b>Kurs USD/IDR</b></div><strong id="market-usdidr">—</strong><span class="down" id="market-usdidr-chg">—</span></div>
       </div>
     </section>
 
@@ -2360,10 +2360,88 @@ showPanel('home');
 })();
 </script>
 <script>
-/* ---------- Home market snapshot ---------- */
+/* ---------- Home market snapshot: LIVE, auto-update ---------- */
 (function(){
-  const snapshot={newcastle:'127,85',richmond:'120,60',ici4:'63,32',usdidr:'15.821'};
-  Object.entries(snapshot).forEach(([id,val])=>{const el=document.getElementById(id==='newcastle'?'price-newcastle':id==='richmond'?'price-richmond':id==='ici4'?'price-ici4':'market-usdidr');if(el)el.textContent=val;});
+  const MARKET_REFRESH_MS = 60000; // 60 detik
+  const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+  const STOOQ_TICKERS = { newcastle: 'lq.f', richmond: 'mtf.f' };
+  let lastGood = { newcastle: null, richmond: null, usdidr: null };
+
+  function fmtID(n, dec){
+    return Number(n).toLocaleString('id-ID', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+  }
+
+  async function fetchStooqLast(ticker){
+    const url = `https://stooq.com/q/l/?s=${ticker}&f=sd2t2c&h&e=csv`;
+    const res = await fetch(CORS_PROXY + encodeURIComponent(url), { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    const rows = text.trim().split('\n');
+    if (rows.length < 2) throw new Error('no data');
+    const cols = rows[1].split(',');
+    const close = parseFloat(cols[3]);
+    if (!close || Number.isNaN(close)) throw new Error('invalid price');
+    return close;
+  }
+
+  async function fetchUsdIdr(){
+    const res = await fetch('https://open.er-api.com/v6/latest/USD', { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    const rate = data && data.rates && data.rates.IDR;
+    if (!rate) throw new Error('no IDR rate');
+    return rate;
+  }
+
+  function setText(id, val){ const el = document.getElementById(id); if (el) el.textContent = val; }
+
+  async function refreshMarket(){
+    setText('price-update-label', 'Memperbarui…');
+    setText('summary-update-label', 'Memperbarui…');
+
+    const [newcastle, richmond, usdidr] = await Promise.allSettled([
+      fetchStooqLast(STOOQ_TICKERS.newcastle),
+      fetchStooqLast(STOOQ_TICKERS.richmond),
+      fetchUsdIdr()
+    ]);
+
+    let ok = 0;
+    if (newcastle.status === 'fulfilled') { lastGood.newcastle = newcastle.value; ok++; }
+    if (richmond.status === 'fulfilled') { lastGood.richmond = richmond.value; ok++; }
+    if (usdidr.status === 'fulfilled') { lastGood.usdidr = usdidr.value; ok++; }
+
+    if (lastGood.newcastle != null) {
+      const v = fmtID(lastGood.newcastle, 2);
+      setText('price-newcastle', v); setText('summary-newcastle', v);
+      setText('summary-newcastle-chg', 'USD/t');
+    }
+    if (lastGood.richmond != null) {
+      const v = fmtID(lastGood.richmond, 2);
+      setText('price-richmond', v); setText('summary-richmond', v);
+      setText('summary-richmond-chg', 'USD/t');
+    }
+    // ICI4 tidak memiliki API publik gratis real-time (indeks mingguan resmi ESDM);
+    // ditampilkan sebagai estimasi proporsional terhadap Newcastle sambil menunggu sumber resmi.
+    if (lastGood.newcastle != null) {
+      setText('price-ici4', fmtID(lastGood.newcastle * 0.495, 2));
+    }
+    if (lastGood.usdidr != null) {
+      const v = fmtID(lastGood.usdidr, 0);
+      setText('market-usdidr', v);
+      setText('market-usdidr-chg', 'live');
+    }
+
+    const now = new Date();
+    const stamp = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' WIB';
+    const label = ok > 0 ? `Live · ${stamp}` : `Gagal terhubung · terakhir ${stamp}`;
+    setText('price-update-label', label);
+    setText('summary-update-label', label);
+    const note = document.getElementById('price-source-note');
+    if (note) note.textContent = `Sumber: stooq.com (ICE Newcastle & API2 Rotterdam), open.er-api.com (kurs USD/IDR). ICI4 estimasi sementara. Update otomatis setiap ${MARKET_REFRESH_MS/1000} detik.`;
+  }
+
+  refreshMarket();
+  setInterval(refreshMarket, MARKET_REFRESH_MS);
 })();
 </script>
 <script>
