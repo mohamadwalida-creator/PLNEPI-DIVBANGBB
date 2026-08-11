@@ -994,8 +994,8 @@ Coal Blending Facility
     <section class="news-card">
       <div class="news-head">
         <div>
-          <div class="news-title">📰 Berita Terbaru Batubara <span class="live-tag">● LIVE</span></div>
-          <div class="news-sub">Update berita, pasar, regulasi, produksi, dan logistik batubara</div>
+          <div class="news-title">📰 Berita Terbaru Batubara <span class="live-tag">● LIVE</span> <span id="news-count" style="font-weight:400;font-size:10px;color:var(--ink-soft);">(0 berita)</span></div>
+          <div class="news-sub">Update berita, pasar, regulasi, produksi, dan logistik batubara · <span id="news-feed-status">Menghubungkan…</span></div>
         </div>
         <button class="refresh-btn" id="news-refresh">↻ Refresh</button>
       </div>
@@ -1252,6 +1252,7 @@ Coal Blending Facility
 <button class="action-btn secondary" id="blending-template">⬇ Download Template Excel</button>
 <label class="action-btn primary blending-upload-label" for="blending-file">＋ Upload Excel</label>
 <input accept=".xlsx,.xls,.csv" hidden="" id="blending-file" type="file"/>
+<button class="action-btn secondary" id="blending-clear" style="color:#993C1D;border-color:#e3c9c2;">🗑 Hapus Data</button>
 </div>
 </div>
 <div class="blending-drop" id="blending-drop">
@@ -1895,20 +1896,20 @@ function newsCategory(title){const t=title.toLowerCase();if(/harga|price|newcast
 function stripHtml(x){const d=document.createElement('div');d.innerHTML=x||'';return (d.textContent||d.innerText||'').replace(/\s+/g,' ').trim();}
 function detectSource(item, fallback){const title=stripHtml(item.title||'');const m=title.match(/\s[-–—]\s([^|]+)$/);return (m&&m[1] ? m[1].trim() : '') || fallback || item.author || 'Sumber berita';}
 function normalizeNews(items, sourceName){return items.filter(x=>x.title).map(x=>({...x,_source:detectSource(x,sourceName)}));}
-function renderNews(items){const list=document.getElementById('news-list');document.getElementById('news-count').textContent=items.length+' berita';if(!items.length){list.innerHTML='<div class="news-empty">Belum ada berita yang dapat ditampilkan dari sumber berita saat ini.</div>';return;}list.innerHTML=items.slice(0,10).map(it=>{const title=stripHtml(it.title);const summary=stripHtml(it.description).slice(0,180);const thumb=it.thumbnail||it.enclosure?.link||'';const img=thumb?`<img class="news-thumb" src="${escHtml(thumb)}" alt="" loading="lazy" onerror="this.style.display='none'">`:`<div class="news-thumb"></div>`;return `<article class="news-item">${img}<div><div class="news-meta"><span class="news-source">${escHtml(it._source||'Sumber berita')}</span><span>•</span><span>${escHtml(newsTimeAgo(it.pubDate))}</span><span class="source-chip" style="padding:3px 6px">${escHtml(newsCategory(title))}</span></div><div class="news-headline">${escHtml(title)}</div><div class="news-summary">${escHtml(summary)}</div><div style="margin-top:4px"><a href="${escHtml(it.link||'#')}" target="_blank" rel="noopener noreferrer" style="font-size:9.5px;color:#0b7188;font-weight:700;text-decoration:none">Baca berita →</a></div></div></article>`;}).join('');}
+function renderNews(items){const list=document.getElementById('news-list');const countEl=document.getElementById('news-count');if(countEl)countEl.textContent='('+items.length+' berita)';if(!items.length){list.innerHTML='<div class="news-empty">Belum ada berita yang dapat ditampilkan dari sumber berita saat ini.</div>';return;}list.innerHTML=items.slice(0,10).map(it=>{const title=stripHtml(it.title);const summary=stripHtml(it.description).slice(0,180);const thumb=it.thumbnail||it.enclosure?.link||'';const img=thumb?`<img class="news-thumb" src="${escHtml(thumb)}" alt="" loading="lazy" onerror="this.style.display='none'">`:`<div class="news-thumb"></div>`;return `<article class="news-item">${img}<div><div class="news-meta"><span class="news-source">${escHtml(it._source||'Sumber berita')}</span><span>•</span><span>${escHtml(newsTimeAgo(it.pubDate))}</span><span class="source-chip" style="padding:3px 6px">${escHtml(newsCategory(title))}</span></div><div class="news-headline">${escHtml(title)}</div><div class="news-summary">${escHtml(summary)}</div><div style="margin-top:4px"><a href="${escHtml(it.link||'#')}" target="_blank" rel="noopener noreferrer" style="font-size:9.5px;color:#0b7188;font-weight:700;text-decoration:none">Baca berita →</a></div></div></article>`;}).join('');}
 async function fetchFeed(feed){
   const controller=new AbortController(); const timer=setTimeout(()=>controller.abort(),8000);
   try{const res=await fetch(NEWS_PROXY+encodeURIComponent(feed.url)+'&t='+Date.now(),{cache:'no-store',signal:controller.signal});if(!res.ok)throw new Error('HTTP '+res.status);const data=await res.json();return normalizeNews(data.items||[],feed.name);}finally{clearTimeout(timer);}
 }
 async function refreshCoalNews(){
-  const status=document.getElementById('news-feed-status');const live=document.getElementById('home-live-status');status.textContent='Updating…';
+  const status=document.getElementById('news-feed-status');const live=document.getElementById('home-live-status');if(status)status.textContent='Updating…';
   const results=await Promise.allSettled(NEWS_FEEDS.map(fetchFeed));
   let items=[]; let ok=0;
   results.forEach(r=>{if(r.status==='fulfilled'){ok++;items.push(...r.value);}});
   const seen=new Set(); items=items.filter(it=>{const key=(it.link||it.title||'').toLowerCase();if(seen.has(key))return false;seen.add(key);return true;}).sort((a,b)=>new Date(b.pubDate)-new Date(a.pubDate));
-  if(items.length){localStorage.setItem('coalNewsCache2026',JSON.stringify(items.slice(0,20)));renderNews(items);status.textContent=`${ok}/${NEWS_FEEDS.length} sumber aktif`;}
-  else {const cached=JSON.parse(localStorage.getItem('coalNewsCache2026')||'[]');if(cached.length){renderNews(cached);status.textContent='Cache digunakan · menunggu feed';}else{renderNews([{title:'Feed berita sedang dihubungkan',description:'Dashboard akan mencoba kembali secara otomatis. Pastikan koneksi internet aktif.',_source:'Dashboard',pubDate:new Date().toISOString(),link:'#'}]);status.textContent='Retry…';}}
-  const now=new Date();const stamp=now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit'});document.getElementById('news-last-update').textContent=stamp;live.textContent=`Live News · update ${stamp} WIB`;
+  if(items.length){localStorage.setItem('coalNewsCache2026',JSON.stringify(items.slice(0,20)));renderNews(items);if(status)status.textContent=`${ok}/${NEWS_FEEDS.length} sumber aktif`;}
+  else {const cached=JSON.parse(localStorage.getItem('coalNewsCache2026')||'[]');if(cached.length){renderNews(cached);if(status)status.textContent='Cache digunakan · menunggu feed';}else{renderNews([{title:'Feed berita sedang dihubungkan',description:'Dashboard akan mencoba kembali secara otomatis. Pastikan koneksi internet aktif.',_source:'Dashboard',pubDate:new Date().toISOString(),link:'#'}]);if(status)status.textContent='Retry…';}}
+  const now=new Date();const stamp=now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit'});const lu=document.getElementById('news-last-update');if(lu)lu.textContent=stamp;if(live)live.textContent=`Live News · update ${stamp} WIB`;
 }
 document.getElementById('news-refresh')?.addEventListener('click',refreshCoalNews);
 refreshCoalNews();setInterval(refreshCoalNews,NEWS_REFRESH_MS);
@@ -2258,6 +2259,7 @@ showPanel('home');
   const locEl=document.getElementById('blend-location-count');
   const lastEl=document.getElementById('blend-last-upload');
   const templateBtn=document.getElementById('blending-template');
+  const clearBtn=document.getElementById('blending-clear');
   let rows=[];
   let headers=[];
 
@@ -2342,6 +2344,22 @@ showPanel('home');
     reader.onload=e=>processWorkbook(e.target.result,file.name);
     reader.readAsArrayBuffer(file);
   }
+  function clearData(){
+    if(!rows.length){ status.textContent='Tidak ada data untuk dihapus.'; return; }
+    if(!confirm('Hapus semua data Coal Blending Facility yang sudah diupload/diinput? Tindakan ini tidak bisa dibatalkan.')) return;
+    rows=[]; headers=[];
+    fileInput.value='';
+    fileName.textContent='Belum ada file yang dipilih';
+    status.textContent='Data telah dihapus. Upload Excel untuk menampilkan data.';
+    countEl.textContent='0';
+    capEl.textContent='—';
+    locEl.textContent='0';
+    lastEl.textContent='—';
+    localStorage.removeItem('coal_blending_rows');
+    render();
+  }
+  clearBtn?.addEventListener('click', clearData);
+
   fileInput.addEventListener('change',e=>handleFile(e.target.files[0]));
   ['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('dragover')}));
   ['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('dragover')}));
